@@ -6,7 +6,7 @@ from pathlib import Path
 
 pygame.init()
 screen = pygame.display.set_mode((300,300))
-# screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
+screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
 pygame.display.set_caption("Sheikah Slate")
 screenWidth, screenHeight = screen.get_size()
 
@@ -248,7 +248,24 @@ runes=[None,         None,         None,       None,   None,     "Camera", None,
 currentRune=None
 elapsed=0
 running=True
+cooldown=0
+
+def mobileInput():
+    time=1
+    while time>0:
+        time-=1/FPS
+        if kill:
+            time=-9
+    if time>-8:
+        isMouseDown=True
+        time=1
+        while time>0:
+            time-=1/FPS
+        isMouseDown=False
+
+
 while running:
+    cooldown-=3/FPS
     isMouseDown=False
     match currentRune:
         case None:
@@ -260,22 +277,27 @@ while running:
                     case pygame.QUIT:
                         running=False
                     case pygame.MOUSEBUTTONDOWN:
-                        isMouseDown=True
+                        threading.Thread(target=mobileInput).start()
                         mouseDownLocation=event.pos
                     case pygame.MOUSEBUTTONUP:
                         isMouseDown=False
+                    case pygame.MOUSEMOTION:
+                        if abs(event.rel[0])>50: switchScreenTo(event.rel[0]/abs(event.rel[0]))
+                        cooldown=1
+                        kill=(event.rel[0]>30 or event.rel[1]>30)
+                        
                     case pygame.KEYDOWN:
                         match event.key:
-                            case pygame.K_a:
-                                switchScreenTo(-1)
-                            case pygame.K_s:
-                                switchScreenTo(0)
-                            case pygame.K_d:
-                                switchScreenTo(1)
-                            case pygame.K_e:
-                                switchScreenTo(-1)
-                            case pygame.K_r:
-                                switchScreenTo(1)
+                            # case pygame.K_a:
+                            #     switchScreenTo(-1)
+                            # case pygame.K_s:
+                            #     switchScreenTo(0)
+                            # case pygame.K_d:
+                            #     switchScreenTo(1)
+                            # case pygame.K_e:
+                            #     switchScreenTo(-1)
+                            # case pygame.K_r:
+                            #     switchScreenTo(1)
                             case pygame.K_q:
                                 running=False
 
