@@ -290,10 +290,11 @@ while running:
                     #     isMouseDown=False
                     case pygame.MOUSEMOTION:
                         print(event)
-                        if cooldown<0 and abs(event.rel[0])>50:
+                        if cooldown<0 and abs(event.rel[0])>50 and abs(event.rel[0])<150:
                             switchScreenTo(-1*event.rel[0]/abs(event.rel[0]))
                             cooldown=1
                         kill=(event.rel[0]>30 or event.rel[1]>30)
+                        noteRel=event.rel
                         
                     case pygame.KEYDOWN:
                         match event.key:
