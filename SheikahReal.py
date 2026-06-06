@@ -6,7 +6,7 @@ from pathlib import Path
 
 pygame.init()
 screen = pygame.display.set_mode((300,300))
-screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
+# screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
 pygame.display.set_caption("Sheikah Slate")
 screenWidth, screenHeight = screen.get_size()
 
@@ -126,10 +126,11 @@ isViewImage=False
 viewedImage=0
 def switchScreenTo(delta):
     global currentImgPage,isViewImage,viewedImage
+    delta=int(delta)
     screenNum=currentScreen+delta
     imgPage=currentImgPage+delta
-    print("delta:",delta,"\tviewedImage:",viewedImage)
-    print(images)
+    # print("delta:",delta,"\tviewedImage:",viewedImage)
+    # print(images)
     if screenNum>=-1 and screenNum<=2:
 
         if currentScreen==1:
@@ -251,22 +252,27 @@ running=True
 cooldown=0
 
 def mobileInput():
-    time=1
+    global isMouseDown
+    print("HI")
+    time=.25
     while time>0:
         time-=1/FPS
         if kill:
+            print("Kill")
             time=-9
+        clock.tick(FPS)
     if time>-8:
+        print("Click",mouseDownLocation)
         isMouseDown=True
-        time=1
-        while time>0:
-            time-=1/FPS
+        clock.tick(FPS)
         isMouseDown=False
+        print("unclick")
 
 
 while running:
+    # print(isMouseDown)
     cooldown-=3/FPS
-    isMouseDown=False
+    # isMouseDown=False
     match currentRune:
         case None:
             elapsed+=1/FPS
@@ -277,13 +283,16 @@ while running:
                     case pygame.QUIT:
                         running=False
                     case pygame.MOUSEBUTTONDOWN:
+                        print("HI2")
                         threading.Thread(target=mobileInput).start()
                         mouseDownLocation=event.pos
-                    case pygame.MOUSEBUTTONUP:
-                        isMouseDown=False
+                    # case pygame.MOUSEBUTTONUP:
+                    #     isMouseDown=False
                     case pygame.MOUSEMOTION:
-                        if abs(event.rel[0])>50: switchScreenTo(event.rel[0]/abs(event.rel[0]))
-                        cooldown=1
+                        print(event)
+                        if cooldown<0 and abs(event.rel[0])>50:
+                            switchScreenTo(-1*event.rel[0]/abs(event.rel[0]))
+                            cooldown=1
                         kill=(event.rel[0]>30 or event.rel[1]>30)
                         
                     case pygame.KEYDOWN:
