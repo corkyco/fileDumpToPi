@@ -12,27 +12,6 @@ import os
 # Posted by brentlance
 # Retrieved 2026-06-09, License - CC BY-SA 3.0
 
-import picamera
-import pygame
-import io
-
-# Init pygame 
-pygame.init()
-screen = pygame.display.set_mode((0,0))
-
-# Init camera
-camera = picamera.PiCamera()
-camera.resolution = (1280, 720)
-camera.crop = (0.0, 0.0, 1.0, 1.0)
-
-x = (screen.get_width() - camera.resolution[0]) / 2
-y = (screen.get_height() - camera.resolution[1]) / 2
-
-# Init buffer
-rgb = bytearray(camera.resolution[0] * camera.resolution[1] * 3)
-
-
-
 
 
 
@@ -45,6 +24,27 @@ screenWidth, screenHeight = screen.get_size()
 
 path="./Assets/"
 pathtoimg="Assets/pictures"
+
+
+#!PICAM
+from picamera2 import Picamera2
+import numpy as np
+
+# Init camera
+camera = Picamera2()
+
+CAM_W, CAM_H = 1280, 720
+
+config = camera.create_video_configuration(
+    main={"size": (CAM_W, CAM_H), "format": "RGB888"}
+)
+camera.configure(config)
+camera.start()
+
+x = (screen.get_width() - CAM_W) // 2
+y = (screen.get_height() - CAM_H) // 2
+#!PICAM
+
 
 
 #!MUSIC
@@ -935,14 +935,13 @@ while running:
                 case True:
                     typed_text=""
                     # getpic()
-                    stream = io.BytesIO()
-                    camera.capture(stream, use_video_port=True, format='rgb')
-                    stream.seek(0)
-                    stream.readinto(rgb)
-                    stream.close()
-                    img = pygame.image.frombuffer(rgb[0:
-                        (camera.resolution[0] * camera.resolution[1] * 3)],
-                        camera.resolution, 'RGB')
+                    frame = camera.capture_array()
+
+                    img = pygame.image.frombuffer(
+                        frame.tobytes(),
+                        (CAM_W, CAM_H),
+                        "RGB"
+                    )
 
                     screen.fill(0)
                     if img:
