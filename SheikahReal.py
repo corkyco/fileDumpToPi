@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 pygame.init()
-screen = pygame.display.set_mode((300,300))
+screen = pygame.display.set_mode((800,480))
 # screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
 pygame.display.set_caption("Sheikah Slate")
 screenWidth, screenHeight = screen.get_size()
@@ -33,6 +33,12 @@ BG = pygame.transform.scale(BG, (screenWidth,screenHeight))
 Glow = pygame.image.load(path+"Glow.png")
 Glow = pygame.transform.scale(Glow, (screenWidth,screenHeight))
 Glow.set_alpha(100)
+Glow2V = pygame.image.load(path+"Glow copy.png")
+Glow2V = pygame.transform.rotate(Glow2V,90.0)
+Glow2V = pygame.transform.scale(Glow2V, (screenWidth,screenHeight))
+Glow2H = pygame.image.load(path+"Glow copy.png")
+Glow2H = pygame.transform.scale(Glow2H, (screenWidth,screenHeight))
+
 
 ShrineIconScale = 8
 ShrineIcon = pygame.image.load(path+"BG.png")
@@ -52,19 +58,31 @@ Refresh = pygame.transform.scale(Refresh, (screenHeight*RefreshScale,screenHeigh
 
 
 RuneScale = 8
-Rune1 = pygame.image.load(path+"BG.png")
+RuneFGScaleBASE = 4
+RuneFGScale = 4
+RuneBG = pygame.image.load(path+"Runes/RuneBG.png")
+RuneBG = pygame.transform.scale(RuneBG, (screenHeight/RuneScale,screenHeight/RuneScale))
+RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
+RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+
+RuneLineScalex = 5/4
+RuneLineScaley = 40
+RuneLine = pygame.image.load(path+"Runes/RuneLine.png")
+RuneLine = pygame.transform.scale(RuneLine, (screenHeight/RuneLineScalex,screenHeight/RuneLineScaley))
+
+Rune1 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon.webp")
 Rune1 = pygame.transform.scale(Rune1, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune2 = pygame.image.load(path+"BG.png")
+Rune2 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon2.png")
 Rune2 = pygame.transform.scale(Rune2, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune3 = pygame.image.load(path+"BG.png")
+Rune3 = pygame.image.load(path+"Runes/BotW_Magnesis_Icon.webp")
 Rune3 = pygame.transform.scale(Rune3, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune4 = pygame.image.load(path+"BG.png")
+Rune4 = pygame.image.load(path+"Runes/BotW_Stasis_Icon.png")
 Rune4 = pygame.transform.scale(Rune4, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune5 = pygame.image.load(path+"BG.png")
+Rune5 = pygame.image.load(path+"Runes/BotW_Cryonis_Icon.png")
 Rune5 = pygame.transform.scale(Rune5, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune6 = pygame.image.load(path+"BG.png")
+Rune6 = pygame.image.load(path+"Runes/BotW_Camera_Icon.png")
 Rune6 = pygame.transform.scale(Rune6, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune7 = pygame.image.load(path+"BG.png")
+Rune7 = pygame.image.load(path+"Runes/TotK_amiibo_Icon.png")
 Rune7 = pygame.transform.scale(Rune7, (screenHeight/RuneScale,screenHeight/RuneScale))
 
 
@@ -73,7 +91,32 @@ InitIcon = pygame.image.load(path+"IconImg.png")
 InitIcon = pygame.transform.scale(InitIcon, (screenHeight/InitIconScale,screenHeight/InitIconScale))
 #!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
-font = pygame.font.SysFont("manapua", 80)
+font = pygame.font.SysFont("arial", 20)
+subfont = pygame.font.SysFont("arial", 12)
+
+RunesTitle = font.render("Runes", True, (255,255,255))
+
+runesTitleText=["RemoteBomb","RemoteBomb","Magnesis","Stasis","Cryonis","Camera","Amiibo","Camera"]
+runesSubTitle=["A bomb that can be detonated remotely","A bomb that can be detonated remotely","Manipulate metallic objects using magnetism","Stop the flow of time for an object","Create a pillar of ice from a water surface","Instantly render a visible image into a picture.","Amiibo","Instantly render a visible image into a picture."]
+runesSubText=[
+    ["The force of the blast can be used to damage monsters or","destroy objects. There are both round and cube bombs,","so use whichever best fits the situation"],
+    ["The force of the blast can be used to damage monsters or","destroy objects. There are both round and cube bombs,","so use whichever best fits the situation"],
+    ["Grab on to metallic objects using the magnetic energy that","pours forth from the Magnesis rune. objects held in the magnetic","snare can be lifted up and moved freely."],
+    ["Stops an object in time while storing its kinetic energy.","The stored energy willl act upon the object when the flow","of time resumes. Making good use of the stored energy","can move even the largest of objects"],
+    ["Builds ice pillars that are very stable. These pillars can be","used as stepping stones or as obstacles. Use Cryonis on","an ice pillar to break it"],
+    ["Camera"],
+    ["Amiibo"],
+    ["Pictures ccreated are saved in the album. It has a useful","feature that connects to the Hyrule Compendium and","automatically registers pictures of new entries"]]
+for title in range(len(runesTitleText)):
+    runesTitleText[title]=font.render(runesTitleText[title], True, (108,219,247))
+for title in range(len(runesSubTitle)):
+    runesSubTitle[title]=font.render(runesSubTitle[title], True, (108,219,247))
+for title in range(len(runesSubText)):
+    for text in range(len(runesSubText[title])):
+        runesSubText[title][text]=subfont.render(runesSubText[title][text], True, (108,219,247))
+    # runesSubText[title]=font.render(runesSubText[title], True, (255,255,255))
+
+
 RunesTitle = font.render("Runes", True, (255,255,255))
 MapTitle = font.render("Map", True, (255,255,255))
 AlbumTitle = font.render("Album", True, (255,255,255))
@@ -84,12 +127,17 @@ CompendiumTitle = font.render("Compendium", True, (255,255,255))
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
 
 
-FPS = 60
+FPS = 20
 compendium={
     "Barbary Macaque":pathtoimg+"ThinkingMonkey copy 3.webp",
     "Happy Barbary Macaque":pathtoimg+"HappyMonkey copy.webp",
     # "Name":"filepath"  
     }
+def addToCompendium(path,name):
+    global compendium
+    if name in list(compendium.keys()): return False
+    compendium[name]=path
+    return True
 images=[None]*12
 def getImageLength():
     return len(os.listdir("Assets/pictures"))
@@ -101,14 +149,12 @@ def loadImages(page,perpage,invis=False):
     for filename in os.listdir(pathtoimg):
         num+=1
         curpage=(num-1)//perpage
-        # print(curpage,page)
         if curpage!=page:
             continue
         images[(num-1)%perpage] = pygame.image.load(os.path.join(pathtoimg,filename))
         # images[num%perpage-1] = pygame.transform.scale(images[num%perpage-1], (screenWidth/5,screenHeight/4))
         if invis:
             images[(num-1)%perpage].set_alpha(0)
-    # print(images)
 
 
 
@@ -129,8 +175,6 @@ def switchScreenTo(delta):
     delta=int(delta)
     screenNum=currentScreen+delta
     imgPage=currentImgPage+delta
-    # print("delta:",delta,"\tviewedImage:",viewedImage)
-    # print(images)
     if screenNum>=-1 and screenNum<=2:
 
         if currentScreen==1:
@@ -246,55 +290,78 @@ def ssAsync(screenNum):
 
 #!    ["RemoteBomb1","RemoteBomb2","Magnesis","Stasis","Cryonis","Camera","Amiibo","Zoom"]
 runes=[None,         None,         None,       None,   None,     "Camera", None,   "Zoom"]
+
 currentRune=None
+currentRuneReal=0
 elapsed=0
 running=True
 cooldown=0
 
-def mobileInput():
-    global isMouseDown
-    print("HI")
-    time=.25
-    while time>0:
-        time-=1/FPS
-        if kill:
-            print("Kill")
-            time=-9
-        clock.tick(FPS)
-    if time>-8:
-        print("Click",mouseDownLocation)
-        isMouseDown=True
-        clock.tick(FPS)
-        isMouseDown=False
-        print("unclick")
 
+touchStart = None
+touchMoved = False
+SWIPE_THRESHOLD = 50
+
+modifierPage = lambda page: page*screenWidth-currentScreen*screenWidth
+modifierOpacity = lambda page: min(255,max(255-255*(1.5)*abs(page-currentScreen),0))
+def withOpac(obj,page):
+    obj.set_alpha(modifierOpacity(page))
+    return obj
+
+oscillator=0
 
 while running:
-    # print(isMouseDown)
+    oscillator+=8/FPS
     cooldown-=3/FPS
-    # isMouseDown=False
+    isMouseDown=False
     match currentRune:
         case None:
             elapsed+=1/FPS
             deltatime=clock.get_time()
 
+
             for event in pygame.event.get():
                 match event.type:
+
                     case pygame.QUIT:
-                        running=False
+                        running = False
+
+                    # Mouse support
                     case pygame.MOUSEBUTTONDOWN:
-                        print("HI2")
-                        threading.Thread(target=mobileInput).start()
-                        mouseDownLocation=event.pos
-                    # case pygame.MOUSEBUTTONUP:
-                    #     isMouseDown=False
+                        touchStart = event.pos
+                        touchMoved = False
+
                     case pygame.MOUSEMOTION:
-                        print(event)
-                        if cooldown<0 and abs(event.rel[0])>50 and abs(event.rel[0])<150:
-                            switchScreenTo(-1*event.rel[0]/abs(event.rel[0]))
-                            cooldown=1
-                        kill=(event.rel[0]>30 or event.rel[1]>30)
-                        noteRel=event.rel
+                        if touchStart:
+                            dx = event.pos[0] - touchStart[0]
+                            dy = event.pos[1] - touchStart[1]
+
+                            if abs(dx) > SWIPE_THRESHOLD or abs(dy) > SWIPE_THRESHOLD:
+                                touchMoved = True
+
+                    case pygame.MOUSEBUTTONUP:
+                        if touchStart:
+                            dx = event.pos[0] - touchStart[0]
+                            dy = event.pos[1] - touchStart[1]
+
+                            if abs(dx) > SWIPE_THRESHOLD:
+                                print("RIGHT" if dx > 0 else "LEFT")
+                                if dx<0:
+                                    switchScreenTo(1)
+                                else: 
+                                    switchScreenTo(-1)
+
+
+                            elif abs(dy) > SWIPE_THRESHOLD:
+                                print("DOWN" if dy > 0 else "UP")
+
+                            else:
+                                print("Click")
+                                # Click
+                                mouseDownLocation = event.pos
+                                isMouseDown = True
+
+                        touchStart = None
                         
                     case pygame.KEYDOWN:
                         match event.key:
@@ -313,32 +380,83 @@ while running:
 
 
             screen.fill((0,0,0))
-            modifierPage = lambda page: page*screenWidth-currentScreen*screenWidth
 
             screen.blit(BG,(0,0))
             #####################!Runes#####################!Runes#####################!Runes
             bufferPercent=.01
-            screen.blit(Rune1,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2))
-            screen.blit(Rune2,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2))
-            screen.blit(Rune3,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2))
-            screen.blit(Rune4,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2))
-            screen.blit(Rune5,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2))
-            screen.blit(Rune6,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2))
-            screen.blit(Rune7,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2))
 
-            Rune1Rect = (0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2-Rune1.get_size()[0]/2,Rune1.get_size()[0]+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2+Rune1.get_size()[0]/2)
-            Rune2Rect = (0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2-Rune2.get_size()[0]/2,Rune2.get_size()[0]+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2+Rune2.get_size()[0]/2)
-            Rune3Rect = (0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2-Rune3.get_size()[0]/2,Rune3.get_size()[0]+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2+Rune3.get_size()[0]/2)
-            Rune4Rect = (0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2-Rune4.get_size()[0]/2,Rune4.get_size()[0]+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2+Rune4.get_size()[0]/2)
-            Rune5Rect = (0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2-Rune5.get_size()[0]/2,Rune5.get_size()[0]+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2+Rune5.get_size()[0]/2)
-            Rune6Rect = (0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2-Rune6.get_size()[0]/2,Rune6.get_size()[0]+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2+Rune6.get_size()[0]/2)
-            Rune7Rect = (0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2-Rune7.get_size()[0]/2,Rune7.get_size()[0]+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2+Rune7.get_size()[0]/2)
+            RuneFGScale=round(RuneFGScaleBASE+math.sin(oscillator)*3)
+            RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
+            RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+            runeHeight=-screenHeight*.1
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
+            screen.blit(Rune1,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
+            if currentRuneReal==0:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2-RuneFGScale+runeHeight))
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
+            screen.blit(Rune2,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
+            if currentRuneReal==1:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2-RuneFGScale+runeHeight))
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
+            screen.blit(Rune3,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
+            if currentRuneReal==2:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2-RuneFGScale+runeHeight))
+
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
+            screen.blit(Rune4,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
+            if currentRuneReal==3:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2-RuneFGScale+runeHeight))
+
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
+            screen.blit(Rune5,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
+            if currentRuneReal==4:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2-RuneFGScale+runeHeight))
+
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
+            screen.blit(Rune6,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
+            if currentRuneReal==5:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2-RuneFGScale+runeHeight))
+
+            
+            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
+            screen.blit(Rune7,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
+            if currentRuneReal==6:
+                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2-RuneFGScale+runeHeight))
+
+
+            #!!
+            linespacing=15
+            lineNum=0
+            screen.blit(runesTitleText[currentRuneReal],(screenWidth/2-runesTitleText[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/15))
+            screen.blit(runesSubTitle[currentRuneReal],(screenWidth/2-runesSubTitle[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/2))
+            screen.blit(RuneLine,(screenWidth/2-RuneLine.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*2))
+
+
+            for line in runesSubText[currentRuneReal]:
+                screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
+                lineNum+=1
+            #!!
+
+
+            Rune1Rect = (0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2-Rune1.get_size()[0]/2+runeHeight,Rune1.get_size()[0]+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2+Rune1.get_size()[0]/2)
+            Rune2Rect = (0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2-Rune2.get_size()[0]/2+runeHeight,Rune2.get_size()[0]+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2+Rune2.get_size()[0]/2)
+            Rune3Rect = (0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2-Rune3.get_size()[0]/2+runeHeight,Rune3.get_size()[0]+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2+Rune3.get_size()[0]/2)
+            Rune4Rect = (0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2-Rune4.get_size()[0]/2+runeHeight,Rune4.get_size()[0]+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2+Rune4.get_size()[0]/2)
+            Rune5Rect = (0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2-Rune5.get_size()[0]/2+runeHeight,Rune5.get_size()[0]+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2+Rune5.get_size()[0]/2)
+            Rune6Rect = (0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2-Rune6.get_size()[0]/2+runeHeight,Rune6.get_size()[0]+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2+Rune6.get_size()[0]/2)
+            Rune7Rect = (0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2-Rune7.get_size()[0]/2+runeHeight,Rune7.get_size()[0]+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2+Rune7.get_size()[0]/2)
             runeBoxes=(Rune1Rect,Rune2Rect,Rune3Rect,Rune4Rect,Rune5Rect,Rune6Rect,Rune7Rect)
             #x1 y1 x2 y2
             runeNum=0
             for rune in runeBoxes:
                 if isMouseDown and mouseDownLocation[0]>rune[0] and  mouseDownLocation[0]<rune[2] and  mouseDownLocation[1]>rune[1] and  mouseDownLocation[1]<rune[3]:
                     currentRune=runes[runeNum]
+                    currentRuneReal=runeNum
                     match runeNum:
                         case 0:
                             playSound(path+"Menu/SelectMenu.flac")
@@ -358,16 +476,18 @@ while running:
                     
                 runeNum+=1
 
-            screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
+            # screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
             #####################!Map#####################!Map#####################!Map
-            # screen.blit(BG,(0+modifierPage(0),0))
+            Glow2H.set_alpha(modifierOpacity(0))
+            Glow2V.set_alpha(modifierOpacity(0))
+            screen.blit(Glow2H,(0+modifierPage(0),0))   #! NEW GLOW
+            screen.blit(Glow2V,(0+modifierPage(0),0))   #! NEW GLOW
 
-            # screen.blit(ShrineText, (screenWidth-ShrineIcon.get_size()[0]*1.5+modifierPage(0)-screenHeight*.1,screenHeight-ShrineIcon.get_size()[1]*1.5-abs(modifierPage(0))))
-            # screen.blit(ShrineText2, (screenWidth-ShrineIcon.get_size()[0]*1.5+modifierPage(0)-screenHeight*.1,screenHeight-ShrineIcon.get_size()[1]*1.5-abs(modifierPage(0))))
-            # screen.blit(ShrineIcon, (screenWidth-ShrineIcon.get_size()[0]*1.5+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.5-abs(modifierPage(0))))
             screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.2))
             screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon.get_size()[1]*.2))
-            screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
+
+
+            # screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
             #####################!Album#####################!Album#####################!Album
             # screen.blit(BG,(0+modifierPage(1),0))
             if currentScreenGoal == 1 or math.floor(currentScreen)==1 or math.ceil(currentScreen)==1:
@@ -382,7 +502,8 @@ while running:
                         image=images[i]
                         if image!=None:
 
-                            screen.blit(pygame.transform.scale(image, (screenWidth/5,screenHeight/4)),(screenWidth/20*(i%4+1)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
+                            # screen.blit(pygame.transform.scale(image, (screenWidth/5,screenHeight/4)),(screenWidth/20*(i%4+1)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
+                            screen.blit(pygame.transform.scale(image, (screenWidth/5,screenHeight/4)),(screenWidth/40+screenWidth/20*(i%4)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
 
 
 
@@ -419,34 +540,36 @@ while running:
                     imgsize=images[viewedImage].get_size()
 
                     if imgsize[0]/imgsize[1]>screenWidth/screenHeight:
-                        screen.blit(
-                            pygame.transform.scale(
+                        new = pygame.transform.scale(
                                 images[viewedImage],
                                 (screenWidth*7/8,
                                 screenWidth*7/8*imgsize[1]/imgsize[0])
-                            ),
-                            (screenWidth/16,
-                            screenHeight/2-imgsize[1]/2)
+                            )
+                        screen.blit(
+                            new,
+                            (screenWidth/2-new.get_size()[0]/2,
+                            screenHeight/2-new.get_size()[1]/2)
                         )
                     else:
-                        screen.blit(
-                            pygame.transform.scale(
+                        new = pygame.transform.scale(
                                 images[viewedImage],
                                 (screenHeight*7/8*imgsize[0]/imgsize[1],
                                 screenHeight*7/8)
-                            ),
-                            (screenWidth/2-imgsize[0]/2,
-                            screenHeight/16)
+                            )
+                        screen.blit(
+                            new,
+                            (screenWidth/2-new.get_size()[0]/2,
+                            screenHeight/2-new.get_size()[1]/2)
                         )
 
-            screen.blit(AlbumTitle,(screenWidth/2-AlbumTitle.get_size()[0]/2+modifierPage(1),screenHeight/90))
+            # screen.blit(AlbumTitle,(screenWidth/2-AlbumTitle.get_size()[0]/2+modifierPage(1),screenHeight/90))
             #####################!Compendium#####################!Compendium#####################!Compendium
             
             
 
 
 
-            screen.blit(CompendiumTitle,(screenWidth/2-CompendiumTitle.get_size()[0]/2+modifierPage(2),screenHeight/90))
+            # screen.blit(CompendiumTitle,(screenWidth/2-CompendiumTitle.get_size()[0]/2+modifierPage(2),screenHeight/90))
             #####################!#####################!#####################!
 
 
