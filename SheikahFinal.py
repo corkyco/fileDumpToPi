@@ -213,7 +213,22 @@ def loadImagesCompendium(page,perpage=24,invis=False):
         if curpage!=page:
             continue
         imagesCompendium[(num-1)%perpage] = pygame.image.load(os.path.join(pathtoimg,filename))
-        titlesCompendium[(num-1)%perpage] = compfont.render(file, True, (255,255,255),None,round(screenWidth/10))
+        # titlesCompendium[(num-1)%perpage] = compfont.render(file, True, (255,255,255),None,round(screenWidth/10))
+
+        max_width = round(screenWidth/10)
+
+        text = file
+        while compfont.size(text)[0] > max_width and len(text) > 0:
+            text = text[:-1]
+
+        if text != file:
+            text += "..."
+
+        titlesCompendium[(num-1)%perpage] = compfont.render(
+            text, True, (255,255,255)
+        )
+
+
         # images[num%perpage-1] = pygame.transform.scale(images[num%perpage-1], (screenWidth/5,screenHeight/4))
         if invis:
             imagesCompendium[(num-1)%perpage].set_alpha(0)
@@ -462,7 +477,27 @@ def withOpac(obj,page):
 oscillator=0
 campicORsave=False
 thisimgpath=""
-picname=""
+keyboardSingle=False
+
+# KEY LAYOUT SETTINGS
+KEY_W = 60
+KEY_H = 60
+MARGIN = 10
+WIDTH = screenHeight*.1
+keyslist = [
+    # row 1
+    ("Q", 0, 0), ("W", 1, 0), ("E", 2, 0), ("R", 3, 0), ("T", 4, 0),
+    ("Y", 5, 0), ("U", 6, 0), ("I", 7, 0), ("O", 8, 0), ("P", 9, 0),
+    # row 2 (offset)
+    ("A", 0.5, 1), ("S", 1.5, 1), ("D", 2.5, 1), ("F", 3.5, 1),
+    ("G", 4.5, 1), ("H", 5.5, 1), ("J", 6.5, 1), ("K", 7.5, 1), ("L", 8.5, 1),
+    # row 3 (more offset)
+    ("Z", 1.5, 2), ("X", 2.5, 2), ("C", 3.5, 2), ("V", 4.5, 2),
+    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), ("submit", 1, 3)
+]
+typed_text = ""
+
+
 while running:
     oscillator+=8/FPS
     cooldown-=3/FPS
@@ -792,8 +827,6 @@ while running:
             endSplitAnim = .5
             endFadeAnim = .7
             deltapos=math.sin((math.pi/2)*min((elapsed-delay)/endSplitAnim,1))
-            print((elapsed-delay)/endSplitAnim)
-            print("DP\t",deltapos)
             splitanimspeed=60
             if elapsed < delay:
                 screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
@@ -847,26 +880,86 @@ while running:
                         print(event)
                         if not campicORsave:
                             if event.key==8:
-                                picname=picname[:-1]
+                                typed_text=typed_text[:-1]
                                 print("DELETE DELETE")
                             else:
-                                picname=picname+str(event.unicode)
+                                typed_text=typed_text+str(event.unicode)
                         keys.append(event.key)
 
             pygame.draw.rect(screen,(255,0,0),(0,0,screenHeight*.1,screenHeight*.1))
+
+
+
+
+
+
+
+
+
+
+
+
             match campicORsave:
                 case True:
-                    picname=""
+                    typed_text=""
                     # getpic()
                     pass
                 case False:
-                    pygame.draw.rect(screen,(255,0,0),(0,0,screenHeight*.1,screenHeight*.1))
-                    if 13 in keys:
-                        if addToCompendium(thisimgpath,picname):
-                            print("yay")
-                            campicORsave=True
-                        else:
-                            print("Nay")
+
+
+
+                    # ---- INSIDE YOUR GAME LOOP BELOW EVENT HANDLING ----
+
+                    mouse_pressed = pygame.mouse.get_pressed()[0]
+                    mouse_pos = pygame.mouse.get_pos()
+
+                    start_y = 120
+                    row_spacing = KEY_H + MARGIN
+
+                    # DRAW KEYS
+                    for label, col, row in keyslist:
+                        x = int((WIDTH // 2 - 5 * (KEY_W + MARGIN)) + col * (KEY_W + MARGIN) + screenWidth/2)
+                        y = start_y + row * row_spacing
+
+                        rect = pygame.Rect(x, y, KEY_W, KEY_H)
+
+                        pygame.draw.rect(screen, (40, 40, 40), rect, border_radius=8)
+                        pygame.draw.rect(screen, (200, 200, 200), rect, 2, border_radius=8)
+
+                        text = font.render(label, True, (255, 255, 255))
+                        screen.blit(text, text.get_rect(center=rect.center))
+
+                        # INPUT CHECK (touch/mouse)
+                        if mouse_pressed and not keyboardSingle and rect.collidepoint(mouse_pos):
+                            if label=="del":
+                                typed_text=typed_text[:-1]
+                            elif label=="submit":
+                                if addToCompendium(thisimgpath,typed_text):
+                                    print("yay")
+                                    campicORsave=True
+                                else:
+                                    print("Nay")
+                            else:
+                                typed_text += label
+                                print(typed_text)
+                                print(label)
+                            # pygame.time.wait(50)  # simple debounce so it doesn't spam
+                            keyboardSingle=True
+                        elif not mouse_pressed:
+                            keyboardSingle=False
+                    # OPTIONAL DISPLAY CURRENT TEXT
+                    text_surface = font.render(typed_text, True, (255, 255, 255))
+                    screen.blit(text_surface, (20, 20))
+
+
+
+
+
+
+
+
+
+
                     #prompt save.  #! Name filename with compendium number
 
 
@@ -879,7 +972,6 @@ while running:
 
 
             pygame.display.flip()
-            print(keys,picname)
             clock.tick(FPS)
 #!####################################################################################################
 #!####################################################################################################
@@ -904,3 +996,4 @@ playSound(path+"Exit.flac")
 while pygame.mixer.music.get_busy():
     pygame.time.wait(100)
 json.dump(compendium, open("test.txt","w"))
+print("SAVED")
