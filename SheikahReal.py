@@ -1,8 +1,41 @@
+import json
 import pygame
 import math
 import threading
 import os
-from pathlib import Path
+# from pathlib import Path
+
+
+
+
+# Source - https://stackoverflow.com/a/48082769
+# Posted by brentlance
+# Retrieved 2026-06-09, License - CC BY-SA 3.0
+
+import picamera
+import pygame
+import io
+
+# Init pygame 
+pygame.init()
+screen = pygame.display.set_mode((0,0))
+
+# Init camera
+camera = picamera.PiCamera()
+camera.resolution = (1280, 720)
+camera.crop = (0.0, 0.0, 1.0, 1.0)
+
+x = (screen.get_width() - camera.resolution[0]) / 2
+y = (screen.get_height() - camera.resolution[1]) / 2
+
+# Init buffer
+rgb = bytearray(camera.resolution[0] * camera.resolution[1] * 3)
+
+
+
+
+
+
 
 pygame.init()
 screen = pygame.display.set_mode((800,480))
@@ -52,6 +85,7 @@ DateTime = pygame.transform.scale(DateTime, (screenHeight/DateTimeScale*259/150,
 
 
 
+
 RefreshScale = .1
 Refresh = pygame.image.load(path+"BG.png")
 Refresh = pygame.transform.scale(Refresh, (screenHeight*RefreshScale,screenHeight*RefreshScale))
@@ -85,16 +119,30 @@ Rune6 = pygame.transform.scale(Rune6, (screenHeight/RuneScale,screenHeight/RuneS
 Rune7 = pygame.image.load(path+"Runes/TotK_amiibo_Icon.png")
 Rune7 = pygame.transform.scale(Rune7, (screenHeight/RuneScale,screenHeight/RuneScale))
 
+compendiumBGimage = pygame.image.load(path+"BG.JPG")
+compendiumBGimage = pygame.transform.scale(compendiumBGimage, (screenWidth/10,screenHeight/6))
 
-InitIconScale = 4
-InitIcon = pygame.image.load(path+"IconImg.png")
-InitIcon = pygame.transform.scale(InitIcon, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+
+
+InitIconScale = 1.5
+InitIconM = pygame.image.load(path+"IconImg.png")
+InitIconM = pygame.transform.scale(InitIconM, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+InitIconR = pygame.image.load(path+"IconImgRight.png")
+InitIconR = pygame.transform.scale(InitIconR, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+InitIconL = pygame.image.load(path+"IconImgLeft.png")
+InitIconL = pygame.transform.scale(InitIconL, (screenHeight/InitIconScale,screenHeight/InitIconScale))
 #!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
 font = pygame.font.SysFont("arial", 20)
 subfont = pygame.font.SysFont("arial", 12)
+compfont = pygame.font.SysFont("arial", 9)
+spacingcompdots=20
+compdotsfont = pygame.font.SysFont("sometype mono", spacingcompdots*3)
 
-RunesTitle = font.render("Runes", True, (255,255,255))
+
+compendiumDots = compdotsfont.render("˙", True, (255,255,255))
+compendiumDotsEtc = compdotsfont.render("˙", True, (100,100,100))
+
 
 runesTitleText=["RemoteBomb","RemoteBomb","Magnesis","Stasis","Cryonis","Camera","Amiibo","Camera"]
 runesSubTitle=["A bomb that can be detonated remotely","A bomb that can be detonated remotely","Manipulate metallic objects using magnetism","Stop the flow of time for an object","Create a pillar of ice from a water surface","Instantly render a visible image into a picture.","Amiibo","Instantly render a visible image into a picture."]
@@ -122,27 +170,54 @@ MapTitle = font.render("Map", True, (255,255,255))
 AlbumTitle = font.render("Album", True, (255,255,255))
 CompendiumTitle = font.render("Compendium", True, (255,255,255))
 
-# print(pygame.font.get_fonts())
-# exit()
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
 
+compendium = json.load(open("test.txt"))
 
 FPS = 20
-compendium={
-    "Barbary Macaque":pathtoimg+"ThinkingMonkey copy 3.webp",
-    "Happy Barbary Macaque":pathtoimg+"HappyMonkey copy.webp",
-    # "Name":"filepath"  
-    }
+# compendium={
+#     "Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "1Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "1Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "2Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "2Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "3Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "3Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "91Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "91Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "911Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "911Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "912Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "912Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "913Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "913Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "12Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "12Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "13Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "13Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "11Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "11Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "111Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "111Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "112Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "112Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     "113Barbary Macaque":"ThinkingMonkey copy 3.webp",
+#     "113Happy Barbary Macaque":"HappyMonkey copy.webp",
+#     # "Name":"filepath"  
+#     }
 def addToCompendium(path,name):
     global compendium
     if name in list(compendium.keys()): return False
     compendium[name]=path
     return True
 images=[None]*12
+imagesCompendium=[None]*24
+titlesCompendium=[None]*24
 def getImageLength():
     return len(os.listdir("Assets/pictures"))
 
-def loadImages(page,perpage,invis=False):
+def loadImages(page,perpage=12,invis=False):
     global images,pathtoimg
     num=0
     images=[None]*perpage
@@ -159,26 +234,63 @@ def loadImages(page,perpage,invis=False):
 
 
 
+def loadImagesCompendium(page,perpage=24,invis=False):
+    global imagesCompendium, compendium, titlesCompendium
+    num=0
+    imagesCompendium=[None]*perpage
+    for file in list(compendium.keys()):
+        filename=compendium[file]
+        num+=1
+        curpage=(num-1)//perpage
+        if curpage!=page:
+            continue
+        imagesCompendium[(num-1)%perpage] = pygame.image.load(os.path.join(pathtoimg,filename))
+        # titlesCompendium[(num-1)%perpage] = compfont.render(file, True, (255,255,255),None,round(screenWidth/10))
+
+        max_width = round(screenWidth/10)
+
+        text = file
+        while compfont.size(text)[0] > max_width and len(text) > 0:
+            text = text[:-1]
+
+        if text != file:
+            text += "..."
+
+        titlesCompendium[(num-1)%perpage] = compfont.render(
+            text, True, (255,255,255)
+        )
+
+
+        # images[num%perpage-1] = pygame.transform.scale(images[num%perpage-1], (screenWidth/5,screenHeight/4))
+        if invis:
+            imagesCompendium[(num-1)%perpage].set_alpha(0)
+
+
+
+
+
 
 
 
 currentScreen=0
 currentScreenGoal=0
 currentImgPage = 0
+
+currentImgPageCompendium = 0
 isMouseDown=False
 mouseDownLocation=(0,0)
 
 isViewImage=False
 viewedImage=0
 def switchScreenTo(delta):
-    global currentImgPage,isViewImage,viewedImage
+    global currentImgPage,currentImgPageCompendium,isViewImage,viewedImage
     delta=int(delta)
     screenNum=currentScreen+delta
     imgPage=currentImgPage+delta
-    if screenNum>=-1 and screenNum<=2:
+    imgPageCompendium=currentImgPageCompendium+delta
+    if screenNum>=-1 and screenNum<=2 or screenNum==3:
 
         if currentScreen==1:
-
 
 
 
@@ -223,16 +335,72 @@ def switchScreenTo(delta):
             else:
                 if imgPage>=0 and imgPage<getImageLength()//12+1:
                     currentImgPage=imgPage
-                    loadImages(currentImgPage,12)
+                    # loadImages(currentImgPage,12)
                     threading.Thread(target=AlbumAnim).start()
                 else:
+                    if delta>0: loadImagesCompendium(currentImgPageCompendium,24)
                     threading.Thread(target=ssAsync,args=(screenNum,)).start()
+
+
+
+
+        elif currentScreen==2:
+
+
+
+            if isViewImage:
+                if viewedImage+delta<0:
+                    if currentImgPageCompendium>0:
+                        currentImgPageCompendium=imgPageCompendium
+                        loadImagesCompendium(currentImgPageCompendium,24)
+                        viewedImage=23
+                        playSound(path+"Album/Page.flac")
+                    else:
+                        isViewImage=False
+                        playSound(path+"Album/BackOut.flac")
+
+
+
+                elif viewedImage+delta>23:
+                    if currentImgPageCompendium<len(list(compendium.keys()))//24+1:
+                        currentImgPageCompendium=imgPageCompendium
+                        loadImagesCompendium(currentImgPageCompendium,24)
+                        viewedImage=0
+                        playSound(path+"Album/Page.flac")
+                    else:
+                        isViewImage=False
+                        playSound(path+"Album/BackOut.flac")
+
+                elif imagesCompendium[viewedImage+delta]==None:
+                    isViewImage=False
+                    playSound(path+"Album/BackOut.flac")
+
+
+                else:
+                    viewedImage+=delta
+                    playSound(path+"Album/Page.flac")
+
+
+
+
+
+
+
+            else:
+                if imgPageCompendium>=0 and imgPageCompendium<len(list(compendium.keys()))//24+1:
+                    currentImgPageCompendium=imgPageCompendium
+
+                    threading.Thread(target=AlbumAnimCompendium).start()
+                else:
+                    threading.Thread(target=ssAsync,args=(screenNum,)).start()
+                    if screenNum==1:loadImages(currentImgPage,12)
 
 
 
 
         else:
             if screenNum==1:loadImages(currentImgPage,12)
+            if screenNum==2:loadImagesCompendium(currentImgPageCompendium,24)
             threading.Thread(target=ssAsync,args=(screenNum,)).start()
 
 AnimSpeed=10
@@ -246,7 +414,7 @@ def AlbumAnim():
         clock.tick(FPS)
     for image in images:
         if image!= None:
-            image.set_alpha(9)
+            image.set_alpha(0)
 
     loadImages(currentImgPage,12,invis=True)
 
@@ -260,11 +428,41 @@ def AlbumAnim():
     for image in images:
         if image!= None:
             image.set_alpha(255)
+albumCompendiumInAnim=False
+def AlbumAnimCompendium():
+    global albumCompendiumInAnim
+    albumCompendiumInAnim=True
+    elapsed=0
+    while running and elapsed<1:
+        elapsed+=AnimSpeed/math.sqrt(60*FPS)
+        for image in imagesCompendium:
+            if image!= None:
+                image.set_alpha(255-255*elapsed)
+        clock.tick(FPS)
+    for image in imagesCompendium:
+        if image!= None:
+            image.set_alpha(0)
+
+    loadImagesCompendium(currentImgPageCompendium,24,invis=True)
+
+    elapsed=0
+    while running and elapsed<1:
+        elapsed+=AnimSpeed/FPS
+        for image in imagesCompendium:
+            if image!= None:
+                image.set_alpha(255*elapsed)
+        clock.tick(FPS)
+    for image in imagesCompendium:
+        if image!= None:
+            image.set_alpha(255)
+    albumCompendiumInAnim=False
 
 
 
 def ssAsync(screenNum):
     global currentScreen,currentScreenGoal
+    if screenNum<-1 or screenNum>2: return None
+
     playSound(path+"Menu/MenuPage.flac")
     currentScreenGoal=screenNum
     elapsed=.01
@@ -309,6 +507,28 @@ def withOpac(obj,page):
     return obj
 
 oscillator=0
+campicORsave=False
+thisimgpath=""
+keyboardSingle=False
+
+# KEY LAYOUT SETTINGS
+KEY_W = 60
+KEY_H = 60
+MARGIN = 10
+WIDTH = screenHeight*.1
+keyslist = [
+    # row 1
+    ("Q", 0, 0), ("W", 1, 0), ("E", 2, 0), ("R", 3, 0), ("T", 4, 0),
+    ("Y", 5, 0), ("U", 6, 0), ("I", 7, 0), ("O", 8, 0), ("P", 9, 0),
+    # row 2 (offset)
+    ("A", 0.5, 1), ("S", 1.5, 1), ("D", 2.5, 1), ("F", 3.5, 1),
+    ("G", 4.5, 1), ("H", 5.5, 1), ("J", 6.5, 1), ("K", 7.5, 1), ("L", 8.5, 1),
+    # row 3 (more offset)
+    ("Z", 1.5, 2), ("X", 2.5, 2), ("C", 3.5, 2), ("V", 4.5, 2),
+    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), ("submit", 1, 3)
+]
+typed_text = ""
+
 
 while running:
     oscillator+=8/FPS
@@ -365,16 +585,6 @@ while running:
                         
                     case pygame.KEYDOWN:
                         match event.key:
-                            # case pygame.K_a:
-                            #     switchScreenTo(-1)
-                            # case pygame.K_s:
-                            #     switchScreenTo(0)
-                            # case pygame.K_d:
-                            #     switchScreenTo(1)
-                            # case pygame.K_e:
-                            #     switchScreenTo(-1)
-                            # case pygame.K_r:
-                            #     switchScreenTo(1)
                             case pygame.K_q:
                                 running=False
 
@@ -508,15 +718,15 @@ while running:
 
 
                     if isMouseDown and mouseDownLocation[0]>screenWidth/20 and mouseDownLocation[0]<screenWidth*19/20 and mouseDownLocation[0]>screenHeight/16 and mouseDownLocation[0]<screenHeight*15/16:
-                        isViewImage=True
                         # viewedImage= int(mouseDownLocation[0]*4//screenWidth + 4*(mouseDownLocation[1]*3//screenHeight))
                         mx, my = mouseDownLocation
 
                         col = int((mx - screenWidth/20) // (screenWidth/4))
                         row = int((my - screenHeight/16) // (screenHeight/4 + screenHeight/16))
 
-                        if 0 <= col < 4 and 0 <= row < 3:
+                        if 0 <= col < 4 and 0 <= row < 3 and images[row * 4 + col]!=None:
                             viewedImage = row * 4 + col
+                            isViewImage=True
 
 
 
@@ -564,7 +774,80 @@ while running:
 
             # screen.blit(AlbumTitle,(screenWidth/2-AlbumTitle.get_size()[0]/2+modifierPage(1),screenHeight/90))
             #####################!Compendium#####################!Compendium#####################!Compendium
-            
+            if currentScreenGoal == 2 or math.floor(currentScreen)==2 or math.ceil(currentScreen)==2:
+                if not isViewImage:
+                    pages=len(list(compendium.keys()))//24+1
+                    for i in range(pages):
+                        if i == currentImgPageCompendium:screen.blit(compendiumDots,(screenWidth/2-spacingcompdots*(pages/2)+spacingcompdots*i,screenHeight/40))
+                        else: screen.blit(compendiumDotsEtc,(screenWidth/2-spacingcompdots*(pages/2)+spacingcompdots*i,screenHeight/40))
+
+                    for i in range(24):
+                        image=imagesCompendium[i]
+                        text=titlesCompendium[i]
+                        screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
+
+                        if image!=None:
+                            screen.blit(pygame.transform.scale(image, (screenWidth/10,screenHeight/6)),(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),    screenHeight/16*(i//8-1)+screenHeight/5*(i//8+1)))
+                            screen.blit(text,                                                                    (screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),screenHeight/16*(i//8-1)+screenHeight/5*(i//8+2)-screenHeight/100))
+
+                        else:
+                            screen.blit(compendiumBGimage,(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),    screenHeight/16*(i//8-1)+screenHeight/5*(i//8+1)))
+                        if not albumCompendiumInAnim: screen.blit(compfont.render(str(i+currentImgPageCompendium*24+1), True, (108,219,247), (0,0,0)),(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),screenHeight/16*(i//8-1)+screenHeight/5*(i//8+2)-screenHeight/18))
+
+                    if isMouseDown and mouseDownLocation[0]>screenWidth/20 and mouseDownLocation[0]<screenWidth*19/20 and mouseDownLocation[0]>screenHeight/16 and mouseDownLocation[0]<screenHeight*15/16:
+                        # viewedImage= int(mouseDownLocation[0]*4//screenWidth + 4*(mouseDownLocation[1]*3//screenHeight))
+                        mx, my = mouseDownLocation
+
+                        col = int((mx - screenWidth/20) // (screenWidth/8))
+                        row = int((my - screenHeight/16) // (screenHeight/4 + screenHeight/16))
+
+                        if 0 <= col < 8 and 0 <= row < 3 and imagesCompendium[row * 8 + col]!=None:
+                            viewedImage = row * 8 + col
+                            isViewImage=True
+
+
+
+
+
+
+
+                        
+                        playSound(path+"Menu/SelectMenu.flac")
+                
+                
+                else:
+                    if isMouseDown and mouseDownLocation[0]<screenWidth/20 and mouseDownLocation[1]<screenWidth/20:
+                        isViewImage=False
+                        playSound(path+"Album/BackOut.flac")
+                    # imgsize=images[viewedImage].get_size()
+                    # if imgsize[0]/imgsize[1]>screenWidth/screenHeight:
+                    #     screen.blit(pygame.transform.scale(images[viewedImage], (screenWidth*7/8,screenWidth*7/8*imgsize[1]/imgsize[0])),(screenWidth/16,screenHeight/2-imgsize[1]/2))
+                    # else:
+                    #     screen.blit(pygame.transform.scale(images[viewedImage], (screenHeight*7/8*imgsize[0]/imgsize[1],screenHeight*7/8)),(screenWidth/2-imgsize[0]/2,screenHeight/16))
+                    imgsize=imagesCompendium[viewedImage].get_size()
+
+                    if imgsize[0]/imgsize[1]>screenWidth/screenHeight:
+                        new = pygame.transform.scale(
+                                imagesCompendium[viewedImage],
+                                (screenWidth*7/8,
+                                screenWidth*7/8*imgsize[1]/imgsize[0])
+                            )
+                        screen.blit(
+                            new,
+                            (screenWidth/2-new.get_size()[0]/2,
+                            screenHeight/2-new.get_size()[1]/2)
+                        )
+                    else:
+                        new = pygame.transform.scale(
+                                imagesCompendium[viewedImage],
+                                (screenHeight*7/8*imgsize[0]/imgsize[1],
+                                screenHeight*7/8)
+                            )
+                        screen.blit(
+                            new,
+                            (screenWidth/2-new.get_size()[0]/2,
+                            screenHeight/2-new.get_size()[1]/2)
+                        )
             
 
 
@@ -572,21 +855,28 @@ while running:
             # screen.blit(CompendiumTitle,(screenWidth/2-CompendiumTitle.get_size()[0]/2+modifierPage(2),screenHeight/90))
             #####################!#####################!#####################!
 
-
-
-
-
-            endScaleAnim = .5
+            delay = .3
+            endSplitAnim = .5
             endFadeAnim = .7
-            if elapsed < endScaleAnim:
-                # InitIcon = pygame.transform.scale(pygame.image.load(path+"IconImg.png"), (screenHeight/InitIconScale+math.log(math.sqrt(elapsed*screenHeight))*40,screenHeight/InitIconScale+math.log(math.sqrt(elapsed*screenHeight))*40))
-                InitIcon = pygame.transform.scale(pygame.image.load(path+"IconImg.png"), (screenHeight/InitIconScale+math.log(elapsed*screenHeight)*40,screenHeight/InitIconScale+math.log(elapsed*screenHeight)*40))
-                screen.blit(InitIcon,(screenWidth/2-InitIcon.get_size()[0]/2,screenHeight/2-InitIcon.get_size()[1]/2))
-            elif elapsed < endScaleAnim+endFadeAnim:
-                # InitIcon = pygame.transform.scale(pygame.image.load(path+"IconImg.png"), (screenHeight/InitIconScale+math.log(math.sqrt(endScaleAnim*screenHeight))*40,screenHeight/InitIconScale+math.log(math.sqrt(endScaleAnim*screenHeight))*40))
-                InitIcon = pygame.transform.scale(pygame.image.load(path+"IconImg.png"), (screenHeight/InitIconScale+math.log(endScaleAnim*screenHeight)*40,screenHeight/InitIconScale+math.log(endScaleAnim*screenHeight)*40))
-                InitIcon.set_alpha(255-255*(elapsed-endScaleAnim)/endFadeAnim)
-                screen.blit(InitIcon,(screenWidth/2-InitIcon.get_size()[0]/2,screenHeight/2-InitIcon.get_size()[1]/2))
+            deltapos=math.sin((math.pi/2)*min((elapsed-delay)/endSplitAnim,1))
+            splitanimspeed=60
+            if elapsed < delay:
+                screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+                screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2,screenHeight/2-InitIconL.get_size()[1]/2))
+                screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2,screenHeight/2-InitIconR.get_size()[1]/2))
+            elif elapsed < endSplitAnim+delay:
+                screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+                screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2-deltapos*splitanimspeed,screenHeight/2-InitIconL.get_size()[1]/2))
+                screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2+deltapos*splitanimspeed,screenHeight/2-InitIconR.get_size()[1]/2))
+
+                pass
+            elif elapsed < endSplitAnim+endFadeAnim+delay:
+                InitIconM.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+                screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+                InitIconL.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+                screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2-splitanimspeed,screenHeight/2-InitIconL.get_size()[1]/2))
+                InitIconR.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+                screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2+splitanimspeed,screenHeight/2-InitIconR.get_size()[1]/2))
 
             screen.blit(Glow,(0,0))
             pygame.display.flip()
@@ -608,6 +898,8 @@ while running:
 #!####################################################################################################
 #!####################################################################################################
         case "Camera":
+            keys=[]
+            screen.fill((0,100,0))
             for event in pygame.event.get():
                 match event.type:
                     case pygame.QUIT:
@@ -616,7 +908,128 @@ while running:
                         if event.pos[0]<screenHeight*.1 and event.pos[1]<screenHeight*.1:
                             currentRune=None
                             playSound(path+"Exit.flac")
-            screen.fill((0,0,0))
+                    case pygame.KEYDOWN:
+                        print(event)
+                        if not campicORsave:
+                            if event.key==8:
+                                typed_text=typed_text[:-1]
+                                print("DELETE DELETE")
+                            else:
+                                typed_text=typed_text+str(event.unicode)
+                        keys.append(event.key)
+
+            pygame.draw.rect(screen,(255,0,0),(0,0,screenHeight*.1,screenHeight*.1))
+
+
+
+
+
+
+
+
+
+
+
+
+            match campicORsave:
+                case True:
+                    typed_text=""
+                    # getpic()
+                    stream = io.BytesIO()
+                    camera.capture(stream, use_video_port=True, format='rgb')
+                    stream.seek(0)
+                    stream.readinto(rgb)
+                    stream.close()
+                    img = pygame.image.frombuffer(rgb[0:
+                        (camera.resolution[0] * camera.resolution[1] * 3)],
+                        camera.resolution, 'RGB')
+
+                    screen.fill(0)
+                    if img:
+                        screen.blit(img, (x,y))
+
+                    pygame.display.update()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                case False:
+
+
+
+                    # ---- INSIDE YOUR GAME LOOP BELOW EVENT HANDLING ----
+
+                    mouse_pressed = pygame.mouse.get_pressed()[0]
+                    mouse_pos = pygame.mouse.get_pos()
+
+                    start_y = 120
+                    row_spacing = KEY_H + MARGIN
+
+                    # DRAW KEYS
+                    for label, col, row in keyslist:
+                        x = int((WIDTH // 2 - 5 * (KEY_W + MARGIN)) + col * (KEY_W + MARGIN) + screenWidth/2)
+                        y = start_y + row * row_spacing
+
+                        rect = pygame.Rect(x, y, KEY_W, KEY_H)
+
+                        pygame.draw.rect(screen, (40, 40, 40), rect, border_radius=8)
+                        pygame.draw.rect(screen, (200, 200, 200), rect, 2, border_radius=8)
+
+                        text = font.render(label, True, (255, 255, 255))
+                        screen.blit(text, text.get_rect(center=rect.center))
+
+                        # INPUT CHECK (touch/mouse)
+                        if mouse_pressed and not keyboardSingle and rect.collidepoint(mouse_pos):
+                            if label=="del":
+                                typed_text=typed_text[:-1]
+                            elif label=="submit":
+                                if addToCompendium(thisimgpath,typed_text):
+                                    print("yay")
+                                    campicORsave=True
+                                else:
+                                    print("Nay")
+                            else:
+                                typed_text += label
+                                print(typed_text)
+                                print(label)
+                            # pygame.time.wait(50)  # simple debounce so it doesn't spam
+                            keyboardSingle=True
+                        elif not mouse_pressed:
+                            keyboardSingle=False
+                    # OPTIONAL DISPLAY CURRENT TEXT
+                    text_surface = font.render(typed_text, True, (255, 255, 255))
+                    screen.blit(text_surface, (20, 20))
+
+
+
+
+
+
+
+
+
+
+                    #prompt save.  #! Name filename with compendium number
+
+
+
+                
+
+
+
+
+
+
             pygame.display.flip()
             clock.tick(FPS)
 #!####################################################################################################
@@ -624,6 +1037,7 @@ while running:
 #!####################################################################################################
 #!####################################################################################################
         case "Zoom": #place markers with using the image its placed at to locate its position in later frames
+            screen.fill((0,0,0))
             for event in pygame.event.get():
                 match event.type:
                     case pygame.QUIT:
@@ -632,7 +1046,6 @@ while running:
                         if event.pos[0]<screenHeight*.1 and event.pos[1]<screenHeight*.1:
                             currentRune=None
                             playSound(path+"Exit.flac")
-            screen.fill((0,0,0))
             pygame.display.flip()
             clock.tick(FPS)
 
@@ -641,3 +1054,8 @@ while running:
 playSound(path+"Exit.flac")
 while pygame.mixer.music.get_busy():
     pygame.time.wait(100)
+json.dump(compendium, open("test.txt","w"))
+print("SAVED")
+
+camera.close()
+pygame.display.quit()
