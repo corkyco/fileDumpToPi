@@ -6,7 +6,7 @@ import os
 import time
 
 def takePicture():
-    global thisimgpath, campicORsave
+    global thisimgpath, campicORsave, camera
 
     os.makedirs("Assets/pictures", exist_ok=True)
 
@@ -18,7 +18,7 @@ def takePicture():
     thisimgpath = filename  # only filename, since Compendium uses pathtoimg
     campicORsave = False    # go to naming screen
     print("saved",filepath)
-
+previewImage=None
 # Source - https://stackoverflow.com/a/48082769
 # Posted by brentlance
 # Retrieved 2026-06-09, License - CC BY-SA 3.0
@@ -962,7 +962,7 @@ while running:
                         screen.blit(pygame.transform.scale(img,screenWidth,screenHeight), (0,0))
                     if isTouchDown:
                         takePicture()
-                        previewImage=pygame.image.load(pygame.transfrom.scale(thisimgpath,CAM_W/4,CAM_H/4))
+                        previewImage=pygame.transform.scale(pygame.image.load(thisimgpath),(CAM_W/4,CAM_H/4))
                     pygame.display.update()
 
 
@@ -1033,6 +1033,8 @@ while running:
 
 
 
+                    if previewImage != None:
+                        screen.blit(previewImage,screenWidth/4,0)
 
                     #prompt save.  #! Name filename with compendium number
 
@@ -1042,8 +1044,6 @@ while running:
 
 
 
-            if previewImage != None:
-                screen.blit(previewImage,screenWidth/4,0)
 
             pygame.display.flip()
             clock.tick(FPS)
