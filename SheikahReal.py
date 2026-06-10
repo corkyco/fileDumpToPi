@@ -420,12 +420,12 @@ def switchScreenTo(delta):
 
 AnimSpeed=10
 def AlbumAnim():
-    elapsed=0
-    while running and elapsed<1:
-        elapsed+=AnimSpeed/math.sqrt(60*FPS)
+    elapsedAA=0
+    while running and elapsedAA<1:
+        elapsedAA+=AnimSpeed/math.sqrt(60*FPS)
         for image in images:
             if image!= None:
-                image.set_alpha(255-255*elapsed)
+                image.set_alpha(255-255*elapsedAA)
         clock.tick(FPS)
     for image in images:
         if image!= None:
@@ -433,12 +433,12 @@ def AlbumAnim():
 
     loadImages(currentImgPage,12,invis=True)
 
-    elapsed=0
-    while running and elapsed<1:
-        elapsed+=AnimSpeed/FPS
+    elapsedAA=0
+    while running and elapsedAA<1:
+        elapsedAA+=AnimSpeed/FPS
         for image in images:
             if image!= None:
-                image.set_alpha(255*elapsed)
+                image.set_alpha(255*elapsedAA)
         clock.tick(FPS)
     for image in images:
         if image!= None:
@@ -447,12 +447,12 @@ albumCompendiumInAnim=False
 def AlbumAnimCompendium():
     global albumCompendiumInAnim
     albumCompendiumInAnim=True
-    elapsed=0
-    while running and elapsed<1:
-        elapsed+=AnimSpeed/math.sqrt(60*FPS)
+    elapsedAAC=0
+    while running and elapsedAAC<1:
+        elapsedAAC+=AnimSpeed/math.sqrt(60*FPS)
         for image in imagesCompendium:
             if image!= None:
-                image.set_alpha(255-255*elapsed)
+                image.set_alpha(255-255*elapsedAAC)
         clock.tick(FPS)
     for image in imagesCompendium:
         if image!= None:
@@ -460,12 +460,12 @@ def AlbumAnimCompendium():
 
     loadImagesCompendium(currentImgPageCompendium,24,invis=True)
 
-    elapsed=0
-    while running and elapsed<1:
-        elapsed+=AnimSpeed/FPS
+    elapsedAAC=0
+    while running and elapsedAAC<1:
+        elapsedAAC+=AnimSpeed/FPS
         for image in imagesCompendium:
             if image!= None:
-                image.set_alpha(255*elapsed)
+                image.set_alpha(255*elapsedAAC)
         clock.tick(FPS)
     for image in imagesCompendium:
         if image!= None:
@@ -480,7 +480,7 @@ def ssAsync(screenNum):
 
     playSound(path+"Menu/MenuPage.flac")
     currentScreenGoal=screenNum
-    elapsed=.01
+    elapsedssa=.01
     ΔscreenNum=0
     iscreenNum=currentScreen
     fscreenNum=screenNum
@@ -489,10 +489,10 @@ def ssAsync(screenNum):
 
     while running:
 
-        elapsed+=60*speed/FPS
+        elapsedssa+=60*speed/FPS
 
-        # ΔscreenNum=math.sqrt(math.sqrt(elapsed/2))*2*(ΔfscreenNum)
-        ΔscreenNum=math.sqrt(elapsed/2)*3*(ΔfscreenNum)
+        # ΔscreenNum=math.sqrt(math.sqrt(elapsedssa/2))*2*(ΔfscreenNum)
+        ΔscreenNum=math.sqrt(elapsedssa/2)*3*(ΔfscreenNum)
 
         currentScreen=iscreenNum+ΔscreenNum
         if abs(ΔscreenNum) >= abs(ΔfscreenNum):
