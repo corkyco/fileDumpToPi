@@ -233,7 +233,7 @@ def getImageLength():
     return len(image_files)
 
 def loadImages(page,perpage=12,invis=False):
-    global images,pathtoimg
+    global images,pathtoimg, image_files
     num=0
     images=[None]*perpage
     for filename in image_files:
@@ -250,7 +250,7 @@ def loadImages(page,perpage=12,invis=False):
 
 
 def loadImagesCompendium(page,perpage=24,invis=False):
-    global imagesCompendium, compendium, titlesCompendium
+    global imagesCompendium, compendium, titlesCompendium, image_files
     num=0
     imagesCompendium=[None]*perpage
     for file in list(compendium.keys()):
