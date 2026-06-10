@@ -37,7 +37,7 @@ screenWidth, screenHeight = screen.get_size()
 
 path="./Assets/"
 pathtoimg="Assets/pictures"
-
+image_files = os.listdir(pathtoimg)
 
 #!PICAM
 from picamera2 import Picamera2
@@ -230,13 +230,13 @@ images=[None]*12
 imagesCompendium=[None]*24
 titlesCompendium=[None]*24
 def getImageLength():
-    return len(os.listdir("Assets/pictures"))
+    return len(image_files)
 
 def loadImages(page,perpage=12,invis=False):
     global images,pathtoimg
     num=0
     images=[None]*perpage
-    for filename in os.listdir(pathtoimg):
+    for filename in image_files:
         num+=1
         curpage=(num-1)//perpage
         if curpage!=page:
@@ -431,7 +431,13 @@ def AlbumAnim():
         if image!= None:
             image.set_alpha(0)
 
-    loadImages(currentImgPage,12,invis=True)
+
+    # t = threading.Thread(target=worker)
+    t=threading.Thread(target=loadImages,args=(currentImgPage,12,True,))
+    t.start()
+
+    t.join()
+    # loadImages(currentImgPage,12,invis=True)
 
     elapsedAA=0
     while running and elapsedAA<1:
@@ -461,7 +467,11 @@ def AlbumAnimCompendium():
     #         image.set_alpha(0)
     #!this is done by the line below with "invis=True"
 
-    loadImagesCompendium(currentImgPageCompendium,24,invis=True)
+    # loadImagesCompendium(currentImgPageCompendium,24,invis=True)
+    t=threading.Thread(target=loadImagesCompendium,args=(currentImgPageCompendium,24,True))
+    t.start()
+
+    t.join()
 
     elapsedAAC=0
     while running and elapsedAAC<1:
@@ -983,6 +993,7 @@ while running:
                             isSaveToCompendium=True
                         else:
                             isSaveToCompendium=False
+                        image_files = os.listdir(pathtoimg)
                     pygame.display.update()
 
 
