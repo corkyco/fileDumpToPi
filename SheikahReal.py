@@ -350,7 +350,6 @@ def switchScreenTo(delta):
             else:
                 if imgPage>=0 and imgPage<getImageLength()//12+1:
                     currentImgPage=imgPage
-                    # loadImages(currentImgPage,12)
                     threading.Thread(target=AlbumAnim).start()
                 else:
                     if delta>0: loadImagesCompendium(currentImgPageCompendium,24)
@@ -427,6 +426,7 @@ def AlbumAnim():
             if image!= None:
                 image.set_alpha(255-255*elapsedAA)
         clock.tick(FPS)
+        elapsedAA+=1/FPS
     for image in images:
         if image!= None:
             image.set_alpha(0)
@@ -440,6 +440,7 @@ def AlbumAnim():
             if image!= None:
                 image.set_alpha(255*elapsedAA)
         clock.tick(FPS)
+        elapsedAA+=1/FPS
     for image in images:
         if image!= None:
             image.set_alpha(255)
@@ -454,9 +455,11 @@ def AlbumAnimCompendium():
             if image!= None:
                 image.set_alpha(255-255*elapsedAAC)
         clock.tick(FPS)
-    for image in imagesCompendium:
-        if image!= None:
-            image.set_alpha(0)
+        elapsedAAC+=1/FPS
+    # for image in imagesCompendium:
+    #     if image!= None:
+    #         image.set_alpha(0)
+    #!this is done by the line below with "invis=True"
 
     loadImagesCompendium(currentImgPageCompendium,24,invis=True)
 
@@ -467,6 +470,7 @@ def AlbumAnimCompendium():
             if image!= None:
                 image.set_alpha(255*elapsedAAC)
         clock.tick(FPS)
+        elapsedAAC+=1/FPS
     for image in imagesCompendium:
         if image!= None:
             image.set_alpha(255)
