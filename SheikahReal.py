@@ -551,7 +551,7 @@ while running:
     isMouseDown=False
     match currentRune:
         case None:
-            if currentScreen==currentScreenGoal and (currentScreen==0 or currentScreen==1 or currentScreen==2):
+            if currentScreen==currentScreenGoal and (currentScreen==0 or currentScreen==1 or currentScreen==2) and elapsed>delay+endFadeAnim+endSplitAnim:
                 clock.tick(FPS)
                 continue
             print(round(clock.get_fps(), 3))
