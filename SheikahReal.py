@@ -1042,8 +1042,8 @@ while running:
 
 
 
-
-            screen.blit(previewImage,screenWidth/4,0)
+            if previewImage != None:
+                screen.blit(previewImage,screenWidth/4,0)
 
             pygame.display.flip()
             clock.tick(FPS)
