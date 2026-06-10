@@ -965,7 +965,7 @@ while running:
                         screen.blit(pygame.transform.scale(img,(screenWidth,screenHeight)), (0,0))
                     if isTouchDown:
                         takePicture()
-                        previewImage=pygame.transform.scale(pygame.image.load(os.path.join("Assets/pictures",thisimgpath)),(CAM_W/4,CAM_H/4))
+                        previewImage=pygame.transform.scale(pygame.image.load(os.path.join("Assets/pictures",thisimgpath)),(CAM_W/6,CAM_H/6))
                         if mouse_pos[0]<screenWidth/2:
                             isSaveToCompendium=True
                         else:
@@ -1031,10 +1031,14 @@ while running:
                         # OPTIONAL DISPLAY CURRENT TEXT
                         text_surface = font.render(typed_text, True, (255, 255, 255))
                         screen.blit(text_surface, (20, 20))
+                        if previewImage != None:
+                            screen.blit(previewImage,(screenWidth*5/12,0))
                     else:
                         picElapsed+=1/FPS
                         if picElapsed>=1:
                             campicORsave=True
+                        if previewImage != None:
+                            screen.blit(pygame.transform.scale(previewImage,(screenWidth*.9,screenHeight*.9)),(screenWidth*.05,screenHeight*.05))
 
 
 
@@ -1044,8 +1048,6 @@ while running:
 
 
 
-                    if previewImage != None:
-                        screen.blit(previewImage,(screenWidth/4,0))
 
                     #prompt save.  #! Name filename with compendium number
 
