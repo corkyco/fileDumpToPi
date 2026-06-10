@@ -20,6 +20,7 @@ def takePicture():
     print("saved",filepath)
 previewImage=None
 isSaveToCompendium=False
+picElapsed=0
 # Source - https://stackoverflow.com/a/48082769
 # Posted by brentlance
 # Retrieved 2026-06-09, License - CC BY-SA 3.0
@@ -967,6 +968,8 @@ while running:
                         previewImage=pygame.transform.scale(pygame.image.load(os.path.join("Assets/pictures",thisimgpath)),(CAM_W/4,CAM_H/4))
                         if mouse_pos[0]<screenWidth/2:
                             isSaveToCompendium=True
+                        else:
+                            isSaveToCompendium=False
                     pygame.display.update()
 
 
@@ -980,54 +983,58 @@ while running:
 
 
 
-
+                    picElapsed=0
                 case False:
+                    if isSaveToCompendium:
 
 
+                        # ---- INSIDE YOUR GAME LOOP BELOW EVENT HANDLING ----
 
-                    # ---- INSIDE YOUR GAME LOOP BELOW EVENT HANDLING ----
+                        mouse_pressed = pygame.mouse.get_pressed()[0]
+                        mouse_pos = pygame.mouse.get_pos()
 
-                    mouse_pressed = pygame.mouse.get_pressed()[0]
-                    mouse_pos = pygame.mouse.get_pos()
+                        start_y = 120
+                        row_spacing = KEY_H + MARGIN
 
-                    start_y = 120
-                    row_spacing = KEY_H + MARGIN
+                        # DRAW KEYS
+                        for label, col, row in keyslist:
+                            x = int((WIDTH // 2 - 5 * (KEY_W + MARGIN)) + col * (KEY_W + MARGIN) + screenWidth/2)
+                            y = start_y + row * row_spacing
 
-                    # DRAW KEYS
-                    for label, col, row in keyslist:
-                        x = int((WIDTH // 2 - 5 * (KEY_W + MARGIN)) + col * (KEY_W + MARGIN) + screenWidth/2)
-                        y = start_y + row * row_spacing
+                            rect = pygame.Rect(x, y, KEY_W, KEY_H)
 
-                        rect = pygame.Rect(x, y, KEY_W, KEY_H)
+                            pygame.draw.rect(screen, (40, 40, 40), rect, border_radius=8)
+                            pygame.draw.rect(screen, (200, 200, 200), rect, 2, border_radius=8)
 
-                        pygame.draw.rect(screen, (40, 40, 40), rect, border_radius=8)
-                        pygame.draw.rect(screen, (200, 200, 200), rect, 2, border_radius=8)
+                            text = font.render(label, True, (255, 255, 255))
+                            screen.blit(text, text.get_rect(center=rect.center))
 
-                        text = font.render(label, True, (255, 255, 255))
-                        screen.blit(text, text.get_rect(center=rect.center))
-
-                        # INPUT CHECK (touch/mouse)
-                        if mouse_pressed and not keyboardSingle and rect.collidepoint(mouse_pos):
-                            if label=="del":
-                                typed_text=typed_text[:-1]
-                            elif label=="submit":
-                                if isSaveToCompendium:
-                                    if addToCompendium(thisimgpath,typed_text):
-                                        print("yay")
-                                    else:
-                                        print("Nay")
-                                campicORsave=True
-                            else:
-                                typed_text += label
-                                print(typed_text)
-                                print(label)
-                            # pygame.time.wait(50)  # simple debounce so it doesn't spam
-                            keyboardSingle=True
-                        elif not mouse_pressed:
-                            keyboardSingle=False
-                    # OPTIONAL DISPLAY CURRENT TEXT
-                    text_surface = font.render(typed_text, True, (255, 255, 255))
-                    screen.blit(text_surface, (20, 20))
+                            # INPUT CHECK (touch/mouse)
+                            if mouse_pressed and not keyboardSingle and rect.collidepoint(mouse_pos):
+                                if label=="del":
+                                    typed_text=typed_text[:-1]
+                                elif label=="submit":
+                                    if isSaveToCompendium:
+                                        if addToCompendium(thisimgpath,typed_text):
+                                            print("yay")
+                                        else:
+                                            print("Nay")
+                                    campicORsave=True
+                                else:
+                                    typed_text += label
+                                    print(typed_text)
+                                    print(label)
+                                # pygame.time.wait(50)  # simple debounce so it doesn't spam
+                                keyboardSingle=True
+                            elif not mouse_pressed:
+                                keyboardSingle=False
+                        # OPTIONAL DISPLAY CURRENT TEXT
+                        text_surface = font.render(typed_text, True, (255, 255, 255))
+                        screen.blit(text_surface, (20, 20))
+                    else:
+                        picElapsed+=1/FPS
+                        if picElapsed>=1:
+                            campicORsave=True
 
 
 
