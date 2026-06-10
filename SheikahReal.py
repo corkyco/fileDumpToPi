@@ -538,7 +538,7 @@ keyslist = [
     ("G", 4.5, 1), ("H", 5.5, 1), ("J", 6.5, 1), ("K", 7.5, 1), ("L", 8.5, 1),
     # row 3 (more offset)
     ("Z", 1.5, 2), ("X", 2.5, 2), ("C", 3.5, 2), ("V", 4.5, 2),
-    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), ("submit", 1, 3)
+    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), (" ", 0, 3), ("submit", 1, 3)
 ]
 typed_text = ""
 
@@ -935,7 +935,8 @@ while running:
                         keys.append(event.key)
 
             pygame.draw.rect(screen,(255,0,0),(0,0,screenHeight*.1,screenHeight*.1))
-
+            if currentRune==None:
+                continue
 
 
 
