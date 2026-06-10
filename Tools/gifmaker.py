@@ -1,69 +1,16 @@
-import cv2
+import pygame
+import math
 
-background = cv2.VideoCapture("background.mp4")
-overlay = cv2.VideoCapture("overlay.mp4")
 
-# First overlay crop (top-left region)
-overlay1_x_percent = 0.4
-overlay1_y_percent = 0.38
+import resource
+import sys
 
-# Second overlay crop (top-left region)
-overlay2_x_percent = 0.13
-overlay2_y_percent = 1
 
-# Frame offset
-overlay_delay_frames = 30
 
-fps = background.get(cv2.CAP_PROP_FPS)
-width = int(background.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(background.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-# Apply delay
-if overlay_delay_frames > 0:
-    overlay.set(cv2.CAP_PROP_POS_FRAMES, overlay_delay_frames)
-elif overlay_delay_frames < 0:
-    background.set(cv2.CAP_PROP_POS_FRAMES, -overlay_delay_frames)
-
-out = cv2.VideoWriter(
-    "output.mp4",
-    cv2.VideoWriter_fourcc(*"mp4v"),
-    fps,
-    (width, height)
-)
-
-while True:
-    ret_bg, bg_frame = background.read()
-    ret_ov, ov_frame = overlay.read()
-
-    if not ret_bg or not ret_ov:
-        break
-
-    ov_frame = cv2.resize(ov_frame, (width, height))
-
-    # ----- Overlay 1 -----
-    x1 = int(width * overlay1_x_percent)
-    y1 = int(height * overlay1_y_percent)
-
-    x1 = max(0, min(x1, width))
-    y1 = max(0, min(y1, height))
-
-    bg_frame[:y1, :x1] = ov_frame[:y1, :x1]
-
-    # ----- Overlay 2 -----
-    x2 = int(width * overlay2_x_percent)
-    y2 = int(height * overlay2_y_percent)
-
-    x2 = max(0, min(x2, width))
-    y2 = max(0, min(y2, height))
-
-    bg_frame[:y2, :x2] = ov_frame[:y2, :x2]
-
-    out.write(bg_frame)
-
-background.release()
-overlay.release()
-out.release()
-cv2.destroyAllWindows()
+# soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+# print("soft =", soft)
+# print("hard =", hard)
+# exit()
 
 
 
@@ -71,12 +18,77 @@ cv2.destroyAllWindows()
 
 
 
-from moviepy import VideoFileClip
 
-clip = VideoFileClip("output.mp4")
+pygame.init()
+screen = pygame.display.set_mode((800,480))
+# screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
+pygame.display.set_caption("Sheikah Slate")
+screenWidth, screenHeight = screen.get_size()
 
-# Optional: resize and reduce FPS to keep GIF size reasonable
-clip = clip.resized(width=400)
-clip = clip.with_fps(10)
+path="./Assets/"
+pathtoimg="Assets/pictures"
+running= True
+FPS=20
+elapsed=0
 
-clip.write_gif("output.gif")
+
+
+clock = pygame.time.Clock()
+#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
+BG = pygame.image.load(path+"BG.JPG")
+BG = pygame.transform.scale(BG, (screenWidth,screenHeight))
+Glow = pygame.image.load(path+"Glow.png")
+Glow = pygame.transform.scale(Glow, (screenWidth,screenHeight))
+Glow.set_alpha(100)
+Glow2V = pygame.image.load(path+"Glow copy.png")
+Glow2V = pygame.transform.rotate(Glow2V,90.0)
+Glow2V = pygame.transform.scale(Glow2V, (screenWidth,screenHeight))
+Glow2H = pygame.image.load(path+"Glow copy.png")
+Glow2H = pygame.transform.scale(Glow2H, (screenWidth,screenHeight))
+
+
+InitIconScale = 1.5
+InitIconM = pygame.image.load(path+"IconImg.png")
+InitIconM = pygame.transform.scale(InitIconM, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+InitIconR = pygame.image.load(path+"IconImgRight.png")
+InitIconR = pygame.transform.scale(InitIconR, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+InitIconL = pygame.image.load(path+"IconImgLeft.png")
+InitIconL = pygame.transform.scale(InitIconL, (screenHeight/InitIconScale,screenHeight/InitIconScale))
+#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
+
+while running:
+    screen.fill((0,0,0))
+    elapsed+=1/FPS
+    deltatime=clock.get_time()
+    for event in pygame.event.get():
+        match event.type:
+            case pygame.QUIT:
+                running = False
+    # screen.blit(CompendiumTitle,(screenWidth/2-CompendiumTitle.get_size()[0]/2+modifierPage(2),screenHeight/90))
+    #####################!#####################!#####################!
+    delay = .3
+    endSplitAnim = .5
+    endFadeAnim = .7
+    deltapos=math.sin((math.pi/2)*min((elapsed-delay)/endSplitAnim,1))
+    splitanimspeed=60
+    if elapsed < delay:
+        screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+        screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2,screenHeight/2-InitIconL.get_size()[1]/2))
+        screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2,screenHeight/2-InitIconR.get_size()[1]/2))
+    elif elapsed < endSplitAnim+delay:
+        screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+        screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2-deltapos*splitanimspeed,screenHeight/2-InitIconL.get_size()[1]/2))
+        screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2+deltapos*splitanimspeed,screenHeight/2-InitIconR.get_size()[1]/2))
+        pass
+    elif elapsed < endSplitAnim+endFadeAnim+delay:
+        InitIconM.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+        screen.blit(InitIconM,(screenWidth/2-InitIconM.get_size()[0]/2,screenHeight/2-InitIconM.get_size()[1]/2))
+        InitIconL.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+        screen.blit(InitIconL,(screenWidth/2-InitIconL.get_size()[0]/2-splitanimspeed,screenHeight/2-InitIconL.get_size()[1]/2))
+        InitIconR.set_alpha(255-255*(elapsed-endSplitAnim)/endFadeAnim)
+        screen.blit(InitIconR,(screenWidth/2-InitIconR.get_size()[0]/2+splitanimspeed,screenHeight/2-InitIconR.get_size()[1]/2))
+    # screen.blit(Glow,(0,0))
+    pygame.display.flip()
+    clock.tick(FPS)
+
+

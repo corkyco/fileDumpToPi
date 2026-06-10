@@ -29,75 +29,73 @@ playSound(path+"Map/OpenMap.flac")
 
 clock = pygame.time.Clock()
 #!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
-BG = pygame.image.load(path+"BG.JPG")
+BG = pygame.image.load(path+"BG.JPG").convert()
 BG = pygame.transform.scale(BG, (screenWidth,screenHeight))
-Glow = pygame.image.load(path+"Glow.png")
+Glow = pygame.image.load(path+"Glow.png").convert_alpha()
 Glow = pygame.transform.scale(Glow, (screenWidth,screenHeight))
 Glow.set_alpha(100)
-Glow2V = pygame.image.load(path+"Glow copy.png")
+Glow2V = pygame.image.load(path+"Glow copy.png").convert_alpha()
 Glow2V = pygame.transform.rotate(Glow2V,90.0)
 Glow2V = pygame.transform.scale(Glow2V, (screenWidth,screenHeight))
-Glow2H = pygame.image.load(path+"Glow copy.png")
+Glow2H = pygame.image.load(path+"Glow copy.png").convert_alpha()
 Glow2H = pygame.transform.scale(Glow2H, (screenWidth,screenHeight))
 
 
 ShrineIconScale = 8
-ShrineIcon = pygame.image.load(path+"BG.png")
-ShrineIcon = pygame.transform.scale(ShrineIcon, (screenHeight/ShrineIconScale,screenHeight/ShrineIconScale))
-ShrineIcon2 = pygame.image.load(path+"ShrineIconImg.png")
+ShrineIcon2 = pygame.image.load(path+"ShrineIconImg.png").convert_alpha()
 ShrineIcon2 = pygame.transform.scale(ShrineIcon2, (screenHeight/ShrineIconScale*200/87,screenHeight/ShrineIconScale))
 
 DateTimeScale = 4
-DateTime = pygame.image.load(path+"DateTime.png")
+DateTime = pygame.image.load(path+"DateTime.png").convert_alpha()
 DateTime = pygame.transform.scale(DateTime, (screenHeight/DateTimeScale*259/150,screenHeight/DateTimeScale))
 
 
 
 
 RefreshScale = .1
-Refresh = pygame.image.load(path+"BG.png")
+Refresh = pygame.image.load(path+"BG.png").convert()
 Refresh = pygame.transform.scale(Refresh, (screenHeight*RefreshScale,screenHeight*RefreshScale))
 
 
 RuneScale = 8
 RuneFGScaleBASE = 4
 RuneFGScale = 4
-RuneBG = pygame.image.load(path+"Runes/RuneBG.png")
+RuneBG = pygame.image.load(path+"Runes/RuneBG.png").convert()
 RuneBG = pygame.transform.scale(RuneBG, (screenHeight/RuneScale,screenHeight/RuneScale))
-RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
+RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png").convert_alpha()
 RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
 
 RuneLineScalex = 5/4
 RuneLineScaley = 40
-RuneLine = pygame.image.load(path+"Runes/RuneLine.png")
+RuneLine = pygame.image.load(path+"Runes/RuneLine.png").convert_alpha()
 RuneLine = pygame.transform.scale(RuneLine, (screenHeight/RuneLineScalex,screenHeight/RuneLineScaley))
 
-Rune1 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon.webp")
+Rune1 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon.webp").convert_alpha()
 Rune1 = pygame.transform.scale(Rune1, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune2 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon2.png")
+Rune2 = pygame.image.load(path+"Runes/BotW_Remote_Bomb_Icon2.png").convert_alpha()
 Rune2 = pygame.transform.scale(Rune2, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune3 = pygame.image.load(path+"Runes/BotW_Magnesis_Icon.webp")
+Rune3 = pygame.image.load(path+"Runes/BotW_Magnesis_Icon.webp").convert_alpha()
 Rune3 = pygame.transform.scale(Rune3, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune4 = pygame.image.load(path+"Runes/BotW_Stasis_Icon.png")
+Rune4 = pygame.image.load(path+"Runes/BotW_Stasis_Icon.png").convert_alpha()
 Rune4 = pygame.transform.scale(Rune4, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune5 = pygame.image.load(path+"Runes/BotW_Cryonis_Icon.png")
+Rune5 = pygame.image.load(path+"Runes/BotW_Cryonis_Icon.png").convert_alpha()
 Rune5 = pygame.transform.scale(Rune5, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune6 = pygame.image.load(path+"Runes/BotW_Camera_Icon.png")
+Rune6 = pygame.image.load(path+"Runes/BotW_Camera_Icon.png").convert_alpha()
 Rune6 = pygame.transform.scale(Rune6, (screenHeight/RuneScale,screenHeight/RuneScale))
-Rune7 = pygame.image.load(path+"Runes/TotK_amiibo_Icon.png")
+Rune7 = pygame.image.load(path+"Runes/TotK_amiibo_Icon.png").convert_alpha()
 Rune7 = pygame.transform.scale(Rune7, (screenHeight/RuneScale,screenHeight/RuneScale))
 
-compendiumBGimage = pygame.image.load(path+"BG.JPG")
+compendiumBGimage = pygame.image.load(path+"BG.JPG").convert()
 compendiumBGimage = pygame.transform.scale(compendiumBGimage, (screenWidth/10,screenHeight/6))
 
 
 
 InitIconScale = 1.5
-InitIconM = pygame.image.load(path+"IconImg.png")
+InitIconM = pygame.image.load(path+"IconImg.png").convert_alpha()
 InitIconM = pygame.transform.scale(InitIconM, (screenHeight/InitIconScale,screenHeight/InitIconScale))
-InitIconR = pygame.image.load(path+"IconImgRight.png")
+InitIconR = pygame.image.load(path+"IconImgRight.png").convert_alpha()
 InitIconR = pygame.transform.scale(InitIconR, (screenHeight/InitIconScale,screenHeight/InitIconScale))
-InitIconL = pygame.image.load(path+"IconImgLeft.png")
+InitIconL = pygame.image.load(path+"IconImgLeft.png").convert_alpha()
 InitIconL = pygame.transform.scale(InitIconL, (screenHeight/InitIconScale,screenHeight/InitIconScale))
 #!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
@@ -194,7 +192,7 @@ def loadImages(page,perpage=12,invis=False):
         curpage=(num-1)//perpage
         if curpage!=page:
             continue
-        images[(num-1)%perpage] = pygame.image.load(os.path.join(pathtoimg,filename))
+        images[(num-1)%perpage] = pygame.transform.scale(pygame.image.load(os.path.join(pathtoimg,filename)).convert(), (screenWidth/5,screenHeight/4))
         # images[num%perpage-1] = pygame.transform.scale(images[num%perpage-1], (screenWidth/5,screenHeight/4))
         if invis:
             images[(num-1)%perpage].set_alpha(0)
@@ -212,7 +210,7 @@ def loadImagesCompendium(page,perpage=24,invis=False):
         curpage=(num-1)//perpage
         if curpage!=page:
             continue
-        imagesCompendium[(num-1)%perpage] = pygame.image.load(os.path.join(pathtoimg,filename))
+        imagesCompendium[(num-1)%perpage] = pygame.transform.scale(pygame.image.load(os.path.join(pathtoimg,filename)).convert(), (screenWidth/10,screenHeight/6))
         # titlesCompendium[(num-1)%perpage] = compfont.render(file, True, (255,255,255),None,round(screenWidth/10))
 
         max_width = round(screenWidth/10)
@@ -564,7 +562,7 @@ while running:
             bufferPercent=.01
 
             RuneFGScale=round(RuneFGScaleBASE+math.sin(oscillator)*3)
-            RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
+            RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png").convert_alpha()
             RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
             runeHeight=-screenHeight*.1
             screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
@@ -661,8 +659,8 @@ while running:
             screen.blit(Glow2H,(0+modifierPage(0),0))   #! NEW GLOW
             screen.blit(Glow2V,(0+modifierPage(0),0))   #! NEW GLOW
 
-            screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.2))
-            screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon.get_size()[1]*.2))
+            screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon2.get_size()[1]*1.2))
+            screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon2.get_size()[1]*.2))
 
 
             # screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
@@ -681,7 +679,7 @@ while running:
                         if image!=None:
 
                             # screen.blit(pygame.transform.scale(image, (screenWidth/5,screenHeight/4)),(screenWidth/20*(i%4+1)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
-                            screen.blit(pygame.transform.scale(image, (screenWidth/5,screenHeight/4)),(screenWidth/40+screenWidth/20*(i%4)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
+                            screen.blit(image,(screenWidth/40+screenWidth/20*(i%4)+screenWidth/5*(i%4)+modifierPage(1),    screenHeight/16*(i//4+1)+screenHeight/4*(i//4)))
 
 
 
@@ -755,7 +753,7 @@ while running:
                         screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
 
                         if image!=None:
-                            screen.blit(pygame.transform.scale(image, (screenWidth/10,screenHeight/6)),(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),    screenHeight/16*(i//8-1)+screenHeight/5*(i//8+1)))
+                            screen.blit(image,(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),    screenHeight/16*(i//8-1)+screenHeight/5*(i//8+1)))
                             screen.blit(text,                                                                    (screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),screenHeight/16*(i//8-1)+screenHeight/5*(i//8+2)-screenHeight/100))
 
                         else:

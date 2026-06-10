@@ -3,10 +3,21 @@ import pygame
 import math
 import threading
 import os
-# from pathlib import Path
+import time
 
+def takePicture():
+    global thisimgpath, campicORsave
 
+    os.makedirs("Assets/pictures", exist_ok=True)
 
+    filename = f"IMG_{int(time.time())}.jpg"
+    filepath = os.path.join("Assets/pictures", filename)
+
+    camera.capture_file(filepath)
+
+    thisimgpath = filename  # only filename, since Compendium uses pathtoimg
+    campicORsave = False    # go to naming screen
+    print("saved",filepath)
 
 # Source - https://stackoverflow.com/a/48082769
 # Posted by brentlance
@@ -899,6 +910,7 @@ while running:
 #!####################################################################################################
         case "Camera":
             keys=[]
+            isTouchDown=False
             screen.fill((0,100,0))
             for event in pygame.event.get():
                 match event.type:
@@ -908,6 +920,7 @@ while running:
                         if event.pos[0]<screenHeight*.1 and event.pos[1]<screenHeight*.1:
                             currentRune=None
                             playSound(path+"Exit.flac")
+                        isTouchDown=True
                     case pygame.KEYDOWN:
                         print(event)
                         if not campicORsave:
@@ -933,6 +946,7 @@ while running:
 
             match campicORsave:
                 case True:
+                    previewImage=None
                     typed_text=""
                     # getpic()
                     frame = camera.capture_array()
@@ -945,8 +959,10 @@ while running:
 
                     screen.fill(0)
                     if img:
-                        screen.blit(img, (x,y))
-
+                        screen.blit(pygame.transform.scale(img,screenWidth,screenHeight), (0,0))
+                    if isTouchDown:
+                        takePicture()
+                        previewImage=pygame.image.load(pygame.transfrom.scale(thisimgpath,CAM_W/4,CAM_H/4))
                     pygame.display.update()
 
 
@@ -1027,7 +1043,7 @@ while running:
 
 
 
-
+            screen.blit(previewImage,screenWidth/4,0)
 
             pygame.display.flip()
             clock.tick(FPS)
