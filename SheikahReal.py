@@ -551,6 +551,9 @@ while running:
     isMouseDown=False
     match currentRune:
         case None:
+            if currentScreen==currentScreenGoal and (currentScreen==0 or currentScreen==1 or currentScreen==2):
+                clock.tick(FPS)
+                continue
             print(round(clock.get_fps(), 3))
             elapsed+=1/FPS
             deltatime=clock.get_time()
