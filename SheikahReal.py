@@ -19,6 +19,7 @@ def takePicture():
     campicORsave = False    # go to naming screen
     print("saved",filepath)
 previewImage=None
+isSaveToCompendium=False
 # Source - https://stackoverflow.com/a/48082769
 # Posted by brentlance
 # Retrieved 2026-06-09, License - CC BY-SA 3.0
@@ -921,6 +922,7 @@ while running:
                             currentRune=None
                             playSound(path+"Exit.flac")
                         isTouchDown=True
+                        mouse_pos=event.pos
                     case pygame.KEYDOWN:
                         print(event)
                         if not campicORsave:
@@ -959,10 +961,12 @@ while running:
 
                     screen.fill(0)
                     if img:
-                        screen.blit(pygame.transform.scale(img,screenWidth,screenHeight), (0,0))
+                        screen.blit(pygame.transform.scale(img,(screenWidth,screenHeight)), (0,0))
                     if isTouchDown:
                         takePicture()
                         previewImage=pygame.transform.scale(pygame.image.load(thisimgpath),(CAM_W/4,CAM_H/4))
+                        if mouse_pos[0]<screenWidth/2:
+                            isSaveToCompendium=True
                     pygame.display.update()
 
 
@@ -1008,11 +1012,12 @@ while running:
                             if label=="del":
                                 typed_text=typed_text[:-1]
                             elif label=="submit":
-                                if addToCompendium(thisimgpath,typed_text):
-                                    print("yay")
-                                    campicORsave=True
-                                else:
-                                    print("Nay")
+                                if isSaveToCompendium:
+                                    if addToCompendium(thisimgpath,typed_text):
+                                        print("yay")
+                                    else:
+                                        print("Nay")
+                                campicORsave=True
                             else:
                                 typed_text += label
                                 print(typed_text)
@@ -1034,7 +1039,7 @@ while running:
 
 
                     if previewImage != None:
-                        screen.blit(previewImage,screenWidth/4,0)
+                        screen.blit(previewImage,(screenWidth/4,0))
 
                     #prompt save.  #! Name filename with compendium number
 
