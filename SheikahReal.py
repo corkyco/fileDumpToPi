@@ -543,6 +543,9 @@ keyslist = [
     ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), (" ", 0, 3), ("submit", 1, 3)
 ]
 typed_text = ""
+delay = .3
+endSplitAnim = .5
+endFadeAnim = .7
 
 
 while running:
@@ -875,9 +878,6 @@ while running:
             # screen.blit(CompendiumTitle,(screenWidth/2-CompendiumTitle.get_size()[0]/2+modifierPage(2),screenHeight/90))
             #####################!#####################!#####################!
 
-            delay = .3
-            endSplitAnim = .5
-            endFadeAnim = .7
             deltapos=math.sin((math.pi/2)*min((elapsed-delay)/endSplitAnim,1))
             splitanimspeed=60
             if elapsed < delay:
