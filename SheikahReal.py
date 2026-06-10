@@ -964,7 +964,7 @@ while running:
                         screen.blit(pygame.transform.scale(img,(screenWidth,screenHeight)), (0,0))
                     if isTouchDown:
                         takePicture()
-                        previewImage=pygame.transform.scale(pygame.image.load(thisimgpath),(CAM_W/4,CAM_H/4))
+                        previewImage=pygame.transform.scale(pygame.image.load(os.path.join("Assets/pictures",thisimgpath)),(CAM_W/4,CAM_H/4))
                         if mouse_pos[0]<screenWidth/2:
                             isSaveToCompendium=True
                     pygame.display.update()
