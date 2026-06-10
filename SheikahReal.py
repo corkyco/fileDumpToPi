@@ -109,8 +109,10 @@ RuneFGScaleBASE = 4
 RuneFGScale = 4
 RuneBG = pygame.image.load(path+"Runes/RuneBG.png")
 RuneBG = pygame.transform.scale(RuneBG, (screenHeight/RuneScale,screenHeight/RuneScale))
-RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
-RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+# RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
+# RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+RuneFGBASE = pygame.image.load(path+"Runes/RuneSelectFG.png")
+
 
 RuneLineScalex = 5/4
 RuneLineScaley = 40
@@ -549,6 +551,7 @@ while running:
     isMouseDown=False
     match currentRune:
         case None:
+            print(round(clock.get_fps(), 1))
             elapsed+=1/FPS
             deltatime=clock.get_time()
 
@@ -606,11 +609,11 @@ while running:
 
             screen.blit(BG,(0,0))
             #####################!Runes#####################!Runes#####################!Runes
+            if not (currentScreenGoal == -1 or math.floor(currentScreen)==-1 or math.ceil(currentScreen)==-1): continue
             bufferPercent=.01
 
             RuneFGScale=round(RuneFGScaleBASE+math.sin(oscillator)*3)
-            RuneFG = pygame.image.load(path+"Runes/RuneSelectFG.png")
-            RuneFG = pygame.transform.scale(RuneFG, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+            RuneFG = pygame.transform.scale(RuneFGBASE, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
             runeHeight=-screenHeight*.1
             screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
             screen.blit(Rune1,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
@@ -701,6 +704,7 @@ while running:
 
             # screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
             #####################!Map#####################!Map#####################!Map
+            if not (currentScreenGoal == 0 or math.floor(currentScreen)==0 or math.ceil(currentScreen)==0): continue
             Glow2H.set_alpha(modifierOpacity(0))
             Glow2V.set_alpha(modifierOpacity(0))
             screen.blit(Glow2H,(0+modifierPage(0),0))   #! NEW GLOW
@@ -911,6 +915,7 @@ while running:
 #!####################################################################################################
 #!####################################################################################################
         case "Camera":
+            print(round(clock.get_fps(), 1))
             keys=[]
             isTouchDown=False
             screen.fill((0,100,0))
@@ -953,7 +958,9 @@ while running:
                     previewImage=None
                     typed_text=""
                     # getpic()
+                    start = time.time()
                     frame = camera.capture_array()
+                    print(time.time() - start)
                     frame = frame[:, :, ::-1]  # swap BGR -> RGB
 
                     img = pygame.image.frombuffer(
