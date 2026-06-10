@@ -609,112 +609,112 @@ while running:
 
             screen.blit(BG,(0,0))
             #####################!Runes#####################!Runes#####################!Runes
-            if not (currentScreenGoal == -1 or math.floor(currentScreen)==-1 or math.ceil(currentScreen)==-1): continue
-            bufferPercent=.01
+            if currentScreenGoal == -1 or math.floor(currentScreen)==-1 or math.ceil(currentScreen)==-1:
+                bufferPercent=.01
 
-            RuneFGScale=round(RuneFGScaleBASE+math.sin(oscillator)*3)
-            RuneFG = pygame.transform.scale(RuneFGBASE, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
-            runeHeight=-screenHeight*.1
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
-            screen.blit(Rune1,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
-            if currentRuneReal==0:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2-RuneFGScale+runeHeight))
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
-            screen.blit(Rune2,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
-            if currentRuneReal==1:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2-RuneFGScale+runeHeight))
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
-            screen.blit(Rune3,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
-            if currentRuneReal==2:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2-RuneFGScale+runeHeight))
-
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
-            screen.blit(Rune4,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
-            if currentRuneReal==3:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2-RuneFGScale+runeHeight))
-
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
-            screen.blit(Rune5,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
-            if currentRuneReal==4:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2-RuneFGScale+runeHeight))
-
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
-            screen.blit(Rune6,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
-            if currentRuneReal==5:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2-RuneFGScale+runeHeight))
-
-            
-            screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
-            screen.blit(Rune7,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
-            if currentRuneReal==6:
-                screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2-RuneFGScale+runeHeight))
-
-
-            #!!
-            linespacing=15
-            lineNum=0
-            screen.blit(runesTitleText[currentRuneReal],(screenWidth/2-runesTitleText[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/15))
-            screen.blit(runesSubTitle[currentRuneReal],(screenWidth/2-runesSubTitle[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/2))
-            screen.blit(RuneLine,(screenWidth/2-RuneLine.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*2))
-
-
-            for line in runesSubText[currentRuneReal]:
-                screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
-                lineNum+=1
-            #!!
-
-
-            Rune1Rect = (0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2-Rune1.get_size()[0]/2+runeHeight,Rune1.get_size()[0]+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2+Rune1.get_size()[0]/2)
-            Rune2Rect = (0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2-Rune2.get_size()[0]/2+runeHeight,Rune2.get_size()[0]+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2+Rune2.get_size()[0]/2)
-            Rune3Rect = (0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2-Rune3.get_size()[0]/2+runeHeight,Rune3.get_size()[0]+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2+Rune3.get_size()[0]/2)
-            Rune4Rect = (0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2-Rune4.get_size()[0]/2+runeHeight,Rune4.get_size()[0]+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2+Rune4.get_size()[0]/2)
-            Rune5Rect = (0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2-Rune5.get_size()[0]/2+runeHeight,Rune5.get_size()[0]+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2+Rune5.get_size()[0]/2)
-            Rune6Rect = (0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2-Rune6.get_size()[0]/2+runeHeight,Rune6.get_size()[0]+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2+Rune6.get_size()[0]/2)
-            Rune7Rect = (0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2-Rune7.get_size()[0]/2+runeHeight,Rune7.get_size()[0]+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2+Rune7.get_size()[0]/2)
-            runeBoxes=(Rune1Rect,Rune2Rect,Rune3Rect,Rune4Rect,Rune5Rect,Rune6Rect,Rune7Rect)
-            #x1 y1 x2 y2
-            runeNum=0
-            for rune in runeBoxes:
-                if isMouseDown and mouseDownLocation[0]>rune[0] and  mouseDownLocation[0]<rune[2] and  mouseDownLocation[1]>rune[1] and  mouseDownLocation[1]<rune[3]:
-                    currentRune=runes[runeNum]
-                    currentRuneReal=runeNum
-                    match runeNum:
-                        case 0:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 1:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 2:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 3:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 4:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 5:
-                            playSound(path+"Menu/SelectMenu.flac")
-                        case 6:
-                            playSound(path+"Runes/PlaceAmiibo.flac")
+                RuneFGScale=round(RuneFGScaleBASE+math.sin(oscillator)*3)
+                RuneFG = pygame.transform.scale(RuneFGBASE, (screenHeight/RuneScale+RuneFGScale*2,screenHeight/RuneScale+RuneFGScale*2))
+                runeHeight=-screenHeight*.1
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
+                screen.blit(Rune1,(0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2+runeHeight))
+                if currentRuneReal==0:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,              screenHeight/2-Rune1.get_size()[0]/2-RuneFGScale+runeHeight))
                 
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
+                screen.blit(Rune2,(0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2+runeHeight))
+                if currentRuneReal==1:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,              screenHeight/2-Rune2.get_size()[0]/2-RuneFGScale+runeHeight))
+                
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
+                screen.blit(Rune3,(0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2+runeHeight))
+                if currentRuneReal==2:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,              screenHeight/2-Rune3.get_size()[0]/2-RuneFGScale+runeHeight))
+
+                
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
+                screen.blit(Rune4,(0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2+runeHeight))
+                if currentRuneReal==3:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,              screenHeight/2-Rune4.get_size()[0]/2-RuneFGScale+runeHeight))
+
+                
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
+                screen.blit(Rune5,(0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2+runeHeight))
+                if currentRuneReal==4:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,              screenHeight/2-Rune5.get_size()[0]/2-RuneFGScale+runeHeight))
+
+                
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
+                screen.blit(Rune6,(0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2+runeHeight))
+                if currentRuneReal==5:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,              screenHeight/2-Rune6.get_size()[0]/2-RuneFGScale+runeHeight))
+
+                
+                screen.blit(RuneBG,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
+                screen.blit(Rune7,(0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2+runeHeight))
+                if currentRuneReal==6:
+                    screen.blit(RuneFG,(-RuneFGScale+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,              screenHeight/2-Rune7.get_size()[0]/2-RuneFGScale+runeHeight))
+
+
+                #!!
+                linespacing=15
+                lineNum=0
+                screen.blit(runesTitleText[currentRuneReal],(screenWidth/2-runesTitleText[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/15))
+                screen.blit(runesSubTitle[currentRuneReal],(screenWidth/2-runesSubTitle[currentRuneReal].get_size()[0]/2+modifierPage(-1),screenHeight/2))
+                screen.blit(RuneLine,(screenWidth/2-RuneLine.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*2))
+
+
+                for line in runesSubText[currentRuneReal]:
+                    screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
+                    lineNum+=1
+                #!!
+
+
+                Rune1Rect = (0+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2-Rune1.get_size()[0]/2+runeHeight,Rune1.get_size()[0]+modifierPage(-1)+screenWidth/2-7*Rune1.get_size()[0]/2-bufferPercent*screenWidth*3,screenHeight/2+Rune1.get_size()[0]/2)
+                Rune2Rect = (0+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2-Rune2.get_size()[0]/2+runeHeight,Rune2.get_size()[0]+modifierPage(-1)+screenWidth/2-5*Rune2.get_size()[0]/2-bufferPercent*screenWidth*2,screenHeight/2+Rune2.get_size()[0]/2)
+                Rune3Rect = (0+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2-Rune3.get_size()[0]/2+runeHeight,Rune3.get_size()[0]+modifierPage(-1)+screenWidth/2-3*Rune3.get_size()[0]/2-bufferPercent*screenWidth,screenHeight/2+Rune3.get_size()[0]/2)
+                Rune4Rect = (0+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2-Rune4.get_size()[0]/2+runeHeight,Rune4.get_size()[0]+modifierPage(-1)+screenWidth/2-Rune4.get_size()[0]/2,screenHeight/2+Rune4.get_size()[0]/2)
+                Rune5Rect = (0+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2-Rune5.get_size()[0]/2+runeHeight,Rune5.get_size()[0]+modifierPage(-1)+screenWidth/2+Rune5.get_size()[0]/2+bufferPercent*screenWidth,screenHeight/2+Rune5.get_size()[0]/2)
+                Rune6Rect = (0+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2-Rune6.get_size()[0]/2+runeHeight,Rune6.get_size()[0]+modifierPage(-1)+screenWidth/2+3*Rune6.get_size()[0]/2+bufferPercent*screenWidth*2,screenHeight/2+Rune6.get_size()[0]/2)
+                Rune7Rect = (0+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2-Rune7.get_size()[0]/2+runeHeight,Rune7.get_size()[0]+modifierPage(-1)+screenWidth/2+5*Rune7.get_size()[0]/2+bufferPercent*screenWidth*3,screenHeight/2+Rune7.get_size()[0]/2)
+                runeBoxes=(Rune1Rect,Rune2Rect,Rune3Rect,Rune4Rect,Rune5Rect,Rune6Rect,Rune7Rect)
+                #x1 y1 x2 y2
+                runeNum=0
+                for rune in runeBoxes:
+                    if isMouseDown and mouseDownLocation[0]>rune[0] and  mouseDownLocation[0]<rune[2] and  mouseDownLocation[1]>rune[1] and  mouseDownLocation[1]<rune[3]:
+                        currentRune=runes[runeNum]
+                        currentRuneReal=runeNum
+                        match runeNum:
+                            case 0:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 1:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 2:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 3:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 4:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 5:
+                                playSound(path+"Menu/SelectMenu.flac")
+                            case 6:
+                                playSound(path+"Runes/PlaceAmiibo.flac")
                     
-                runeNum+=1
+                        
+                    runeNum+=1
 
             # screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
             #####################!Map#####################!Map#####################!Map
-            if not (currentScreenGoal == 0 or math.floor(currentScreen)==0 or math.ceil(currentScreen)==0): continue
-            Glow2H.set_alpha(modifierOpacity(0))
-            Glow2V.set_alpha(modifierOpacity(0))
-            screen.blit(Glow2H,(0+modifierPage(0),0))   #! NEW GLOW
-            screen.blit(Glow2V,(0+modifierPage(0),0))   #! NEW GLOW
+            if currentScreenGoal == 0 or math.floor(currentScreen)==0 or math.ceil(currentScreen)==0:
+                Glow2H.set_alpha(modifierOpacity(0))
+                Glow2V.set_alpha(modifierOpacity(0))
+                screen.blit(Glow2H,(0+modifierPage(0),0))   #! NEW GLOW
+                screen.blit(Glow2V,(0+modifierPage(0),0))   #! NEW GLOW
 
-            screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.2))
-            screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon.get_size()[1]*.2))
+                screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.2))
+                screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon.get_size()[1]*.2))
 
 
-            # screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
+                # screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
             #####################!Album#####################!Album#####################!Album
             # screen.blit(BG,(0+modifierPage(1),0))
             if currentScreenGoal == 1 or math.floor(currentScreen)==1 or math.ceil(currentScreen)==1:
