@@ -551,7 +551,7 @@ while running:
     isMouseDown=False
     match currentRune:
         case None:
-            print(round(clock.get_fps(), 1))
+            print(round(clock.get_fps(), 3))
             elapsed+=1/FPS
             deltatime=clock.get_time()
 
@@ -915,7 +915,7 @@ while running:
 #!####################################################################################################
 #!####################################################################################################
         case "Camera":
-            print(round(clock.get_fps(), 1))
+            print(round(clock.get_fps(), 3))
             keys=[]
             isTouchDown=False
             screen.fill((0,100,0))
