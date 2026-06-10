@@ -953,6 +953,7 @@ while running:
                     typed_text=""
                     # getpic()
                     frame = camera.capture_array()
+                    frame = frame[:, :, ::-1]  # swap BGR -> RGB
 
                     img = pygame.image.frombuffer(
                         frame.tobytes(),
