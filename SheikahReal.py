@@ -149,7 +149,7 @@ InitIconL = pygame.transform.scale(InitIconL, (screenHeight/InitIconScale,screen
 #!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES#!IMAGES
 #!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT!TEXT
 font = pygame.font.SysFont("arial", 20)
-subfont = pygame.font.SysFont("arial", 12)
+subfont = pygame.font.SysFont("arial", 13)
 compfont = pygame.font.SysFont("arial", 9)
 spacingcompdots=20
 compdotsfont = pygame.font.SysFont("sometype mono", spacingcompdots*3)
@@ -158,17 +158,16 @@ compdotsfont = pygame.font.SysFont("sometype mono", spacingcompdots*3)
 compendiumDots = compdotsfont.render("˙", True, (255,255,255))
 compendiumDotsEtc = compdotsfont.render("˙", True, (100,100,100))
 
-
 runesTitleText=["RemoteBomb","RemoteBomb","Magnesis","Stasis","Cryonis","Camera","Amiibo","Camera"]
-runesSubTitle=["A bomb that can be detonated remotely","A bomb that can be detonated remotely","Manipulate metallic objects using magnetism","Stop the flow of time for an object","Create a pillar of ice from a water surface","Instantly render a visible image into a picture.","Amiibo","Instantly render a visible image into a picture."]
+runesSubTitle=["A bomb that can be detonated remotely","A bomb that can be detonated remotely","Manipulate metallic objects using magnetism","Stop the flow of time for an object","Create a pillar of ice from a water surface","Instantly render a visible image into a picture.","Use an Amiibo to summon something useful","Instantly render a visible image into a picture."]
 runesSubText=[
     ["The force of the blast can be used to damage monsters or","destroy objects. There are both round and cube bombs,","so use whichever best fits the situation"],
     ["The force of the blast can be used to damage monsters or","destroy objects. There are both round and cube bombs,","so use whichever best fits the situation"],
     ["Grab on to metallic objects using the magnetic energy that","pours forth from the Magnesis rune. objects held in the magnetic","snare can be lifted up and moved freely."],
     ["Stops an object in time while storing its kinetic energy.","The stored energy willl act upon the object when the flow","of time resumes. Making good use of the stored energy","can move even the largest of objects"],
     ["Builds ice pillars that are very stable. These pillars can be","used as stepping stones or as obstacles. Use Cryonis on","an ice pillar to break it"],
-    ["Camera"],
-    ["Amiibo"],
+    ["Pictures ccreated are saved in the album. It has a useful","feature that connects to the Hyrule Compendium and","automatically registers pictures of new entries"],
+    ["You never know what's going to come through when you","use it. Some amiibo can only be used once a day."],
     ["Pictures ccreated are saved in the album. It has a useful","feature that connects to the Hyrule Compendium and","automatically registers pictures of new entries"]]
 for title in range(len(runesTitleText)):
     runesTitleText[title]=font.render(runesTitleText[title], True, (108,219,247))
@@ -548,13 +547,13 @@ WIDTH = screenHeight*.1
 keyslist = [
     # row 1
     ("Q", 0, 0), ("W", 1, 0), ("E", 2, 0), ("R", 3, 0), ("T", 4, 0),
-    ("Y", 5, 0), ("U", 6, 0), ("I", 7, 0), ("O", 8, 0), ("P", 9, 0),
+    ("Y", 5, 0), ("U", 6, 0), ("I", 7, 0), ("O", 8, 0), ("P", 9, 0), ("del", 10, 0),
     # row 2 (offset)
     ("A", 0.5, 1), ("S", 1.5, 1), ("D", 2.5, 1), ("F", 3.5, 1),
-    ("G", 4.5, 1), ("H", 5.5, 1), ("J", 6.5, 1), ("K", 7.5, 1), ("L", 8.5, 1),
+    ("G", 4.5, 1), ("H", 5.5, 1), ("J", 6.5, 1), ("K", 7.5, 1), ("L", 8.5, 1), ("submit", 9.5, 1),
     # row 3 (more offset)
     ("Z", 1.5, 2), ("X", 2.5, 2), ("C", 3.5, 2), ("V", 4.5, 2),
-    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), ("del", -1, 3), (" ", 0, 3), ("submit", 1, 3)
+    ("B", 5.5, 2), ("N", 6.5, 2), ("M", 7.5, 2), (" ", 4.5, 3)
 ]
 typed_text = ""
 delay = .3
@@ -681,7 +680,7 @@ while running:
 
 
                 for line in runesSubText[currentRuneReal]:
-                    screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
+                    screen.blit(line,(screenWidth/2-RuneLine.get_size()[0]/2+modifierPage(-1)+screenWidth*.03,screenHeight/2+linespacing*(lineNum+4)))
                     lineNum+=1
                 #!!
 
@@ -698,8 +697,9 @@ while running:
                 runeNum=0
                 for rune in runeBoxes:
                     if isMouseDown and mouseDownLocation[0]>rune[0] and  mouseDownLocation[0]<rune[2] and  mouseDownLocation[1]>rune[1] and  mouseDownLocation[1]<rune[3]:
-                        currentRune=runes[runeNum]
                         currentRuneReal=runeNum
+                        if currentRuneReal==runeNum:
+                            currentRune=runes[runeNum]
                         match runeNum:
                             case 0:
                                 playSound(path+"Menu/SelectMenu.flac")
@@ -818,7 +818,7 @@ while running:
                     for i in range(24):
                         image=imagesCompendium[i]
                         text=titlesCompendium[i]
-                        screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
+                        # screen.blit(line,(screenWidth/2-line.get_size()[0]/2+modifierPage(-1),screenHeight/2+linespacing*(lineNum+4)))
 
                         if image!=None:
                             screen.blit(pygame.transform.scale(image, (screenWidth/10,screenHeight/6)),(screenWidth/80+screenWidth/40*(i%8)+screenWidth/10*(i%8)+modifierPage(2),    screenHeight/16*(i//8-1)+screenHeight/5*(i//8+1)))
