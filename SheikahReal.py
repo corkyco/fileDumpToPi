@@ -296,7 +296,7 @@ mouseDownLocation=(0,0)
 
 isViewImage=False
 viewedImage=0
-def switchScreenTo(delta):
+def switchScreenTo(delta,bypass=False):
     global currentImgPage,currentImgPageCompendium,isViewImage,viewedImage
     delta=int(delta)
     screenNum=currentScreen+delta
@@ -304,7 +304,9 @@ def switchScreenTo(delta):
     imgPageCompendium=currentImgPageCompendium+delta
     if screenNum>=-1 and screenNum<=2 or screenNum==3:
 
-        if currentScreen==1:
+        if bypass:
+            threading.Thread(target=ssAsync,args=(delta,)).start()
+        elif currentScreen==1:
 
 
 
@@ -718,6 +720,9 @@ while running:
                     
                         
                     runeNum+=1
+                if isMouseDown and mouseDownLocation[0]<screenHeight*.1 and mouseDownLocation[1]<screenHeight*.1:
+                    print("RESET")
+                    switchScreenTo(0,True)
 
             # screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
             #####################!Map#####################!Map#####################!Map
@@ -730,6 +735,14 @@ while running:
                 screen.blit(ShrineIcon2, (screenWidth-ShrineIcon2.get_size()[0]-ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-ShrineIcon.get_size()[1]*1.2))
                 screen.blit(DateTime, (ShrineIcon2.get_size()[1]*.2+modifierPage(0),screenHeight-(DateTime.get_size()[1])-ShrineIcon.get_size()[1]*.2))
 
+                if mouseDownLocation[0]<screenHeight*.1 and mouseDownLocation[1]<screenHeight*.1:
+                    running=False
+                elif mouseDownLocation[0]<screenHeight*.4 and mouseDownLocation[1]<screenHeight*.1:
+                    switchScreenTo(-1,True)
+                elif mouseDownLocation[0]<screenHeight*.7 and mouseDownLocation[1]<screenHeight*.1:
+                    switchScreenTo(1,True)
+                elif mouseDownLocation[1]<screenHeight*.1:
+                    switchScreenTo(2,True)
 
                 # screen.blit(MapTitle,(screenWidth/2-MapTitle.get_size()[0]/2+modifierPage(0),screenHeight/90))
             #####################!Album#####################!Album#####################!Album
@@ -751,7 +764,7 @@ while running:
 
 
 
-                    if isMouseDown and mouseDownLocation[0]>screenWidth/20 and mouseDownLocation[0]<screenWidth*19/20 and mouseDownLocation[0]>screenHeight/16 and mouseDownLocation[0]<screenHeight*15/16:
+                    if isMouseDown and mouseDownLocation[0]>screenWidth/20 and mouseDownLocation[0]<screenWidth*19/20 and mouseDownLocation[1]>screenHeight/16 and mouseDownLocation[1]<screenHeight*15/16:
                         # viewedImage= int(mouseDownLocation[0]*4//screenWidth + 4*(mouseDownLocation[1]*3//screenHeight))
                         mx, my = mouseDownLocation
 
@@ -805,6 +818,9 @@ while running:
                             (screenWidth/2-new.get_size()[0]/2,
                             screenHeight/2-new.get_size()[1]/2)
                         )
+                if isMouseDown and mouseDownLocation[0]<screenHeight*.1 and mouseDownLocation[1]<screenHeight*.1:
+                    print("RESET")
+                    switchScreenTo(0,True)
 
             # screen.blit(AlbumTitle,(screenWidth/2-AlbumTitle.get_size()[0]/2+modifierPage(1),screenHeight/90))
             #####################!Compendium#####################!Compendium#####################!Compendium
@@ -882,6 +898,9 @@ while running:
                             (screenWidth/2-new.get_size()[0]/2,
                             screenHeight/2-new.get_size()[1]/2)
                         )
+                if isMouseDown and mouseDownLocation[0]<screenHeight*.1 and mouseDownLocation[1]<screenHeight*.1:
+                    print("RESET")
+                    switchScreenTo(0,True)
             
 
 
