@@ -614,6 +614,7 @@ while running:
                                 # Click
                                 mouseDownLocation = event.pos
                                 isMouseDown = True
+                                print(mouseDownLocation[0]/screenWidth,mouseDownLocation[1]/screenHeight)
 
                         touchStart = None
                         
