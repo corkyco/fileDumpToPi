@@ -724,6 +724,7 @@ while running:
                 if isMouseDown and mouseDownLocation[0]<screenHeight*.1 and mouseDownLocation[1]<screenHeight*.1:
                     print("RESET")
                     switchScreenTo(0,True)
+                    
 
             # screen.blit(RunesTitle,(screenWidth/2-RunesTitle.get_size()[0]/2+modifierPage(-1),screenHeight/90))
             #####################!Map#####################!Map#####################!Map
